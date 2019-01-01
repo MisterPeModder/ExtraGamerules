@@ -4,9 +4,7 @@
   "description": "Adds a bunch of new gamerules!",
   "version": "1.0.0",
   "side": "universal",
-  "initializers": [
-    "net.fabricmc.example.ExampleMod"
-  ],
+  "initializers": [],
   "requires": {
     "fabric": "*"
   },
