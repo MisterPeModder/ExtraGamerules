@@ -1,0 +1,17 @@
+{
+  "id": "extra-gamerules",
+  "name": "Extra Gamerules",
+  "description": "Adds a bunch of new gamerules!",
+  "version": "1.0.0",
+  "side": "universal",
+  "initializers": [
+    "net.fabricmc.example.ExampleMod"
+  ],
+  "requires": {
+    "fabric": "*"
+  },
+  "mixins": {
+    "client": "extra-gamerules.client.json",
+    "common": "extra-gamerules.common.json"
+  }
+}
