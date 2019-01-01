@@ -279,10 +279,10 @@ GitHub.sublime-settings
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
@@ -316,6 +316,7 @@ $RECYCLE.BIN/
 ### Gradle ###
 .gradle
 /build/
+gradle/*
 
 # Ignore Gradle GUI config
 gradle-app.setting
