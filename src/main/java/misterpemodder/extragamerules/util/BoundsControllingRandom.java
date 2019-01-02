@@ -1,4 +1,4 @@
-package misterpemodder.extragamerules;
+package misterpemodder.extragamerules.util;
 
 import java.util.Random;
 

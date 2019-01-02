@@ -9,9 +9,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.BoundsControllingRandom;
-import misterpemodder.extragamerules.GameRulesUtil;
-import misterpemodder.extragamerules.WorldHook;
+import misterpemodder.extragamerules.util.BoundsControllingRandom;
+import misterpemodder.extragamerules.util.GameRulesUtil;
+import misterpemodder.extragamerules.hook.EntityHook;
+import misterpemodder.extragamerules.hook.WorldHook;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.level.LevelProperties;
@@ -22,6 +23,8 @@ public final class WorldMixin implements WorldHook {
   public Random random;
   @Shadow
   protected LevelProperties properties;
+  @Shadow
+  public boolean isClient;
 
   protected BoundsControllingRandom customRandom = null;
   protected boolean lightningSpawnsFire = true;
@@ -41,6 +44,8 @@ public final class WorldMixin implements WorldHook {
     GameRules rules = this.properties.getGameRules();
     this.customRandom.setBound(GameRulesUtil.getInt(rules.get("lightningProbability"), 100000));
     this.lightningSpawnsFire = GameRulesUtil.getBoolean(rules.get("lightningFire"), true);
+    if (!this.isClient)
+      EntityHook.setLightningDamage(GameRulesUtil.getFloat(rules.get("lightningDamage"), 5.0f));
   }
 
   @Redirect(

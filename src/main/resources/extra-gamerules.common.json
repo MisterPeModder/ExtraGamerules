@@ -3,6 +3,7 @@
   "package": "misterpemodder.extragamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "EntityMixin",
     "GameRulesMixin",
     "WorldMixin"
   ],

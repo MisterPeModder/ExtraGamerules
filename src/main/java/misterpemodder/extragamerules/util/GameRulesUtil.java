@@ -1,7 +1,8 @@
-package misterpemodder.extragamerules;
+package misterpemodder.extragamerules.util;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
+import misterpemodder.extragamerules.hook.WorldHook;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Key;
@@ -26,6 +27,16 @@ public final class GameRulesUtil {
     if (value == null || value.getType() != GameRules.Type.STRING)
       return defaultValue;
     return value.getString();
+  }
+
+  public static Float getFloat(Value value, float defaultValue) {
+    if (value == null || value.getType() != GameRules.Type.STRING)
+      return defaultValue;
+    try {
+      return Float.parseFloat(value.getString());
+    } catch (NumberFormatException e) {
+      return defaultValue;
+    }
   }
 
   /**

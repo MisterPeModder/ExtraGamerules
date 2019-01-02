@@ -6,7 +6,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.GameRulesUtil;
+import misterpemodder.extragamerules.hook.EntityHook;
+import misterpemodder.extragamerules.util.GameRulesUtil;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Key;
 import net.minecraft.world.GameRules.Type;
@@ -26,5 +27,13 @@ public final class GameRulesMixin {
         (world, value) -> {
           world.setLightningSpawningFire(value.getBoolean());
         });
+    KEYS.put("lightningDamage", new Key("5.0", Type.STRING, (server, value) -> {
+      try {
+        float damage = Float.parseFloat(value.getString());
+        EntityHook.setLightningDamage(damage);
+      } catch (NumberFormatException e) {
+        EntityHook.setLightningDamage(0f);
+      }
+    }));
   }
 }
