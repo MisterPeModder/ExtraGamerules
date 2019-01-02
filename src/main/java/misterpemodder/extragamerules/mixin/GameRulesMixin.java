@@ -6,12 +6,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.WorldHook;
-import net.minecraft.server.world.ServerWorld;
+import misterpemodder.extragamerules.GameRulesUtil;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Key;
 import net.minecraft.world.GameRules.Type;
-import net.minecraft.world.dimension.DimensionType;
 
 @Mixin(GameRules.class)
 public final class GameRulesMixin {
@@ -20,15 +18,13 @@ public final class GameRulesMixin {
 
   @Inject(at = @At("TAIL"), method = "<clinit>")
   private static void onClinit(CallbackInfo ci) {
-    KEYS.put("lightningProbability", new Key("100000", Type.INTEGER, (server, rule) -> {
-      for (ServerWorld world : server.getWorlds()) {
-        if (world instanceof WorldHook) {
-          ((WorldHook) world).getCustomRandom().setBound(rule.getInteger());
-        } else {
-          server.logError("Failed to set lightningProbability for dimension "
-              + DimensionType.getId(world.getDimension().getType()));
-        }
-      }
-    }));
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningProbability", "100000", Type.INTEGER,
+        (world, value) -> {
+          world.getCustomRandom().setBound(value.getInteger());
+        });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningFire", "true", Type.BOOLEAN,
+        (world, value) -> {
+          world.setLightningSpawningFire(value.getBoolean());
+        });
   }
 }
