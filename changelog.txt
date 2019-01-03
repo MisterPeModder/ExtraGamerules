@@ -2,3 +2,9 @@
 Version 1.0.0:
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 - Initial Release
+- Added all gamerules from ConfigurableLightning:
+  - lightningProbability
+  - lightningFire
+  - lightningDamage
+  - lightningRange
+  - lightningHorseSpawningModifier 
