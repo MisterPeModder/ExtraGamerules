@@ -16,4 +16,8 @@ public interface WorldHook {
   double getLightningRange();
 
   void setLightningRange(double value);
+
+  double getHorseTrapSpawningChance();
+
+  void setHorseTrapSpawingChance(double value);
 }

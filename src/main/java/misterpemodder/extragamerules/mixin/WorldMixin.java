@@ -5,7 +5,9 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import misterpemodder.extragamerules.hook.WorldHook;
@@ -29,6 +31,7 @@ public final class WorldMixin implements WorldHook {
   private boolean lightningSpawnsFire = DefaultValues.LIGHTNING_FIRE;
   private float lightningDamage = DefaultValues.LIGHTNING_DAMAGE;
   private double lightningRange = DefaultValues.LIGHTNING_RANGE;
+  private double horseTrapSpawningChance = DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE;
 
   @Override
   public int getLightningProbability() {
@@ -70,6 +73,17 @@ public final class WorldMixin implements WorldHook {
     this.lightningRange = value < 0.0 ? DefaultValues.LIGHTNING_RANGE : value;
   }
 
+  @Override
+  public double getHorseTrapSpawningChance() {
+    return this.horseTrapSpawningChance;
+  }
+
+  @Override
+  public void setHorseTrapSpawingChance(double value) {
+    this.horseTrapSpawningChance =
+        value < 0.0 ? DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE : value;
+  }
+
   @Inject(at = @At("RETURN"), method = "<init>")
   public void onConstruct(CallbackInfo ci) {
     this.customRandom = new BoundsControllingRandom(this.random);
@@ -81,6 +95,11 @@ public final class WorldMixin implements WorldHook {
           GameRulesUtil.getBoolean(rules.get("lightningFire"), DefaultValues.LIGHTNING_FIRE);
       this.lightningDamage =
           GameRulesUtil.getFloat(rules.get("lightningDamage"), DefaultValues.LIGHTNING_DAMAGE);
+      this.lightningRange =
+          GameRulesUtil.getDouble(rules.get("lightningRange"), DefaultValues.LIGHTNING_RANGE);
+      this.horseTrapSpawningChance =
+          GameRulesUtil.getDouble(rules.get("lightningHorseSpawningModifier"),
+              DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE);
     }
   }
 
@@ -90,5 +109,11 @@ public final class WorldMixin implements WorldHook {
       method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V")
   private Random getFieldValue(World owner) {
     return this.customRandom;
+  }
+
+  @ModifyConstant(constant = @Constant(doubleValue = 0.01, ordinal = 0),
+      method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V")
+  private double modifyHorseSpawningChance(double original) {
+    return this.horseTrapSpawningChance;
   }
 }

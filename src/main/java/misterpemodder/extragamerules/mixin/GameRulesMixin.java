@@ -47,5 +47,11 @@ public final class GameRulesMixin {
         }, (value) -> {
           return Double.parseDouble(value.getString()) >= 0.0;
         });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningHorseSpawningModifier",
+        DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE, Type.STRING, (world, value) -> {
+          world.setHorseTrapSpawingChance(Double.parseDouble(value.getString()));
+        }, (value) -> {
+          return Double.parseDouble(value.getString()) >= 0.0;
+        });
   }
 }

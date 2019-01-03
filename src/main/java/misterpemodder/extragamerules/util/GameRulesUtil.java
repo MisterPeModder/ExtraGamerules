@@ -29,11 +29,21 @@ public final class GameRulesUtil {
     return value.getString();
   }
 
-  public static Float getFloat(Value value, float defaultValue) {
+  public static float getFloat(Value value, float defaultValue) {
     if (value == null || value.getType() != GameRules.Type.STRING)
       return defaultValue;
     try {
       return Float.parseFloat(value.getString());
+    } catch (NumberFormatException e) {
+      return defaultValue;
+    }
+  }
+
+  public static double getDouble(Value value, double defaultValue) {
+    if (value == null || value.getType() != GameRules.Type.STRING)
+      return defaultValue;
+    try {
+      return Double.parseDouble(value.getString());
     } catch (NumberFormatException e) {
       return defaultValue;
     }
