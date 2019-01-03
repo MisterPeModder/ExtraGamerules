@@ -34,5 +34,18 @@ public final class GameRulesMixin {
           } catch (NumberFormatException e) {
           }
         });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningRange", DefaultValues.LIGHTNING_RANGE,
+        Type.STRING, (world, value) -> {
+          try {
+            double v = Double.parseDouble(value.getString());
+            // Due to how weird entity checking code, range does not work above ~6.57...
+            if (v > 6.57) {
+              v = 6.57;
+              value.set("6.57", world.getServer());
+            }
+            world.setLightningRange(v);
+          } catch (NumberFormatException e) {
+          }
+        });
   }
 }

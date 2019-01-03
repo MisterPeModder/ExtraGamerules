@@ -12,4 +12,8 @@ public interface WorldHook {
   float getLightningDamage();
 
   void setLightningDamage(float value);
+
+  double getLightningRange();
+
+  void setLightningRange(double value);
 }

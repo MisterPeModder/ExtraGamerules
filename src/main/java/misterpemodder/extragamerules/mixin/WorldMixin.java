@@ -26,8 +26,9 @@ public final class WorldMixin implements WorldHook {
   public boolean isClient;
 
   private BoundsControllingRandom customRandom = null;
-  private boolean lightningSpawnsFire = true;
-  private float lightningDamage = 5.0f;
+  private boolean lightningSpawnsFire = DefaultValues.LIGHTNING_FIRE;
+  private float lightningDamage = DefaultValues.LIGHTNING_DAMAGE;
+  private double lightningRange = DefaultValues.LIGHTNING_RANGE;
 
   @Override
   public int getLightningProbability() {
@@ -57,6 +58,16 @@ public final class WorldMixin implements WorldHook {
   @Override
   public void setLightningDamage(float value) {
     this.lightningDamage = value < 0f ? DefaultValues.LIGHTNING_DAMAGE : value;
+  }
+
+  @Override
+  public double getLightningRange() {
+    return this.lightningRange;
+  }
+
+  @Override
+  public void setLightningRange(double value) {
+    this.lightningRange = value < 0.0 ? DefaultValues.LIGHTNING_RANGE : value;
   }
 
   @Inject(at = @At("RETURN"), method = "<init>")
