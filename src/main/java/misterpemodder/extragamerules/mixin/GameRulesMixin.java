@@ -22,6 +22,8 @@ public final class GameRulesMixin {
     GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningProbability",
         DefaultValues.LIGHTNING_PROBABILITY, Type.INTEGER, (world, value) -> {
           world.setLightningProbability(value.getInteger());
+        }, (value) -> {
+          return value.getInteger() >= 0;
         });
     GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningFire", DefaultValues.LIGHTNING_FIRE,
         Type.BOOLEAN, (world, value) -> {
@@ -29,23 +31,21 @@ public final class GameRulesMixin {
         });
     GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningDamage", DefaultValues.LIGHTNING_DAMAGE,
         Type.STRING, (world, value) -> {
-          try {
-            world.setLightningDamage(Float.parseFloat(value.getString()));
-          } catch (NumberFormatException e) {
-          }
+          world.setLightningDamage(Float.parseFloat(value.getString()));
+        }, (value) -> {
+          return Float.parseFloat(value.getString()) >= 0f;
         });
     GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningRange", DefaultValues.LIGHTNING_RANGE,
         Type.STRING, (world, value) -> {
-          try {
-            double v = Double.parseDouble(value.getString());
-            // Due to how weird entity checking code, range does not work above ~6.57...
-            if (v > 6.57) {
-              v = 6.57;
-              value.set("6.57", world.getServer());
-            }
-            world.setLightningRange(v);
-          } catch (NumberFormatException e) {
+          double v = Double.parseDouble(value.getString());
+          // Due to how weird entity checking code, range does not work above ~6.57...
+          if (v > 6.57) {
+            v = 6.57;
+            value.set("6.57", world.getServer());
           }
+          world.setLightningRange(v);
+        }, (value) -> {
+          return Double.parseDouble(value.getString()) >= 0.0;
         });
   }
 }
