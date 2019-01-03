@@ -17,7 +17,7 @@ Damage dealt by ligthing (default: 5.0)
 - lightningRange: <code>/gamerule lightningRange &lt;double&gt;</code>  
 Entites inside this range will be damaged by ligthning (default: 3.0)
 
-- lightningHorseSpawning:  <code>/gamerule lightningRange &lt;boolean&gt;</code>  
+- lightningHorseSpawning:  <code>/gamerule lightningHorseSpawning &lt;boolean&gt;</code>  
 Should lightning spawn skeleton horses? (default: true)
 
 Setting any of this values to an invalid string such as "covefe" will set it to its default vaulue.
