@@ -24,4 +24,8 @@ public class BoundsControllingRandom extends Random {
   public void setBound(int bound) {
     this.bound = bound < 0 ? -1 : bound;
   }
+
+  public int getBound() {
+    return this.bound;
+  }
 }

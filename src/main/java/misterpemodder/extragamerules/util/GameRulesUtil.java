@@ -50,9 +50,9 @@ public final class GameRulesUtil {
    */
   @SuppressWarnings("unchecked")
   public static <T extends ServerWorld & WorldHook> void registerWorldHookGamerule(
-      Map<String, Key> map, String name, String defaultValue, Type type,
+      Map<String, Key> map, String name, Object defaultValue, Type type,
       BiConsumer<T, Value> handler) {
-    map.put(name, new Key(defaultValue, type, (server, value) -> {
+    map.put(name, new Key(defaultValue.toString(), type, (server, value) -> {
       for (ServerWorld world : server.getWorlds()) {
         if (world instanceof WorldHook) {
           handler.accept((T) world, value);

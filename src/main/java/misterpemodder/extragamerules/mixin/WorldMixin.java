@@ -6,13 +6,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.util.BoundsControllingRandom;
-import misterpemodder.extragamerules.util.GameRulesUtil;
-import misterpemodder.extragamerules.hook.EntityHook;
 import misterpemodder.extragamerules.hook.WorldHook;
+import misterpemodder.extragamerules.util.BoundsControllingRandom;
+import misterpemodder.extragamerules.util.DefaultValues;
+import misterpemodder.extragamerules.util.GameRulesUtil;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.level.LevelProperties;
@@ -26,11 +25,23 @@ public final class WorldMixin implements WorldHook {
   @Shadow
   public boolean isClient;
 
-  protected BoundsControllingRandom customRandom = null;
-  protected boolean lightningSpawnsFire = true;
+  private BoundsControllingRandom customRandom = null;
+  private boolean lightningSpawnsFire = true;
+  private float lightningDamage = 5.0f;
 
-  public BoundsControllingRandom getCustomRandom() {
-    return this.customRandom;
+  @Override
+  public int getLightningProbability() {
+    return this.customRandom.getBound();
+  }
+
+  @Override
+  public void setLightningProbability(int value) {
+    this.customRandom.setBound(value);
+  }
+
+  @Override
+  public boolean getLightningSpawningFire() {
+    return this.lightningSpawnsFire;
   }
 
   @Override
@@ -38,14 +49,28 @@ public final class WorldMixin implements WorldHook {
     this.lightningSpawnsFire = value;
   }
 
+  @Override
+  public float getLightningDamage() {
+    return this.lightningDamage;
+  }
+
+  @Override
+  public void setLightningDamage(float value) {
+    this.lightningDamage = value < 0f ? DefaultValues.LIGHTNING_DAMAGE : value;
+  }
+
   @Inject(at = @At("RETURN"), method = "<init>")
   public void onConstruct(CallbackInfo ci) {
     this.customRandom = new BoundsControllingRandom(this.random);
     GameRules rules = this.properties.getGameRules();
-    this.customRandom.setBound(GameRulesUtil.getInt(rules.get("lightningProbability"), 100000));
-    this.lightningSpawnsFire = GameRulesUtil.getBoolean(rules.get("lightningFire"), true);
-    if (!this.isClient)
-      EntityHook.setLightningDamage(GameRulesUtil.getFloat(rules.get("lightningDamage"), 5.0f));
+    if (!this.isClient) {
+      this.customRandom.setBound(GameRulesUtil.getInt(rules.get("lightningProbability"),
+          DefaultValues.LIGHTNING_PROBABILITY));
+      this.lightningSpawnsFire =
+          GameRulesUtil.getBoolean(rules.get("lightningFire"), DefaultValues.LIGHTNING_FIRE);
+      this.lightningDamage =
+          GameRulesUtil.getFloat(rules.get("lightningDamage"), DefaultValues.LIGHTNING_DAMAGE);
+    }
   }
 
   @Redirect(
@@ -54,12 +79,5 @@ public final class WorldMixin implements WorldHook {
       method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V")
   private Random getFieldValue(World owner) {
     return this.customRandom;
-  }
-
-  @ModifyArg(at = @At(value = "INVOKE",
-      target = "Lnet/minecraft/entity/LightningEntity;<init>(Lnet/minecraft/world/World;DDDZ)V",
-      ordinal = 0), method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V")
-  private boolean adjustLightningFireParam(boolean nofire) {
-    return !this.lightningSpawnsFire;
   }
 }

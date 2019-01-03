@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.hook.EntityHook;
+import misterpemodder.extragamerules.util.DefaultValues;
 import misterpemodder.extragamerules.util.GameRulesUtil;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Key;
@@ -19,21 +19,20 @@ public final class GameRulesMixin {
 
   @Inject(at = @At("TAIL"), method = "<clinit>")
   private static void onClinit(CallbackInfo ci) {
-    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningProbability", "100000", Type.INTEGER,
-        (world, value) -> {
-          world.getCustomRandom().setBound(value.getInteger());
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningProbability",
+        DefaultValues.LIGHTNING_PROBABILITY, Type.INTEGER, (world, value) -> {
+          world.setLightningProbability(value.getInteger());
         });
-    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningFire", "true", Type.BOOLEAN,
-        (world, value) -> {
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningFire", DefaultValues.LIGHTNING_FIRE,
+        Type.BOOLEAN, (world, value) -> {
           world.setLightningSpawningFire(value.getBoolean());
         });
-    KEYS.put("lightningDamage", new Key("5.0", Type.STRING, (server, value) -> {
-      try {
-        float damage = Float.parseFloat(value.getString());
-        EntityHook.setLightningDamage(damage);
-      } catch (NumberFormatException e) {
-        EntityHook.setLightningDamage(0f);
-      }
-    }));
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "lightningDamage", DefaultValues.LIGHTNING_DAMAGE,
+        Type.STRING, (world, value) -> {
+          try {
+            world.setLightningDamage(Float.parseFloat(value.getString()));
+          } catch (NumberFormatException e) {
+          }
+        });
   }
 }
