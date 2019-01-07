@@ -20,4 +20,8 @@ public interface WorldHook {
   double getHorseTrapSpawningChance();
 
   void setHorseTrapSpawingChance(double value);
+
+  boolean isInsomniaEnabled();
+
+  void setInsomniaEnabled(boolean value);
 }

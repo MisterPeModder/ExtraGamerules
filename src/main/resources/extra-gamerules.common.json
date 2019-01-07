@@ -3,6 +3,7 @@
   "package": "misterpemodder.extragamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "Class2910Mixin",
     "EntityMixin",
     "GameRulesMixin",
     "LightningEntityMixin",

@@ -53,5 +53,9 @@ public final class GameRulesMixin {
         }, (value) -> {
           return Double.parseDouble(value.getString()) >= 0.0;
         });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "doInsomnia", DefaultValues.DO_INSOMNIA,
+        Type.BOOLEAN, (world, value) -> {
+          world.setInsomniaEnabled(value.getBoolean());
+        });
   }
 }

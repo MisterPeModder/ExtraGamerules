@@ -32,6 +32,7 @@ public final class WorldMixin implements WorldHook {
   private float lightningDamage = DefaultValues.LIGHTNING_DAMAGE;
   private double lightningRange = DefaultValues.LIGHTNING_RANGE;
   private double horseTrapSpawningChance = DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE;
+  private boolean doInsomnia = DefaultValues.DO_INSOMNIA;
 
   @Override
   public int getLightningProbability() {
@@ -84,6 +85,16 @@ public final class WorldMixin implements WorldHook {
         value < 0.0 ? DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE : value;
   }
 
+  @Override
+  public boolean isInsomniaEnabled() {
+    return this.doInsomnia;
+  }
+
+  @Override
+  public void setInsomniaEnabled(boolean value) {
+    this.doInsomnia = value;
+  }
+
   @Inject(at = @At("RETURN"), method = "<init>")
   public void onConstruct(CallbackInfo ci) {
     this.customRandom = new BoundsControllingRandom(this.random);
@@ -100,6 +111,8 @@ public final class WorldMixin implements WorldHook {
       this.horseTrapSpawningChance =
           GameRulesUtil.getDouble(rules.get("lightningHorseSpawningModifier"),
               DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE);
+      this.doInsomnia =
+          GameRulesUtil.getBoolean(rules.get("doInsomnia"), DefaultValues.DO_INSOMNIA);
     }
   }
 
