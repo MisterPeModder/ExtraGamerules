@@ -60,7 +60,12 @@ curseforge {
       requiredDependency 'fabric'
     }
 	}
-	options{
+	options {
 		forgeGradleIntegration = false
 	}
+}
+
+afterEvaluate {
+	// Manually set dependsOn because curseforge doesn't set one.
+  tasks.curseforge310323.dependsOn remapJar
 }
