@@ -51,7 +51,7 @@ curseforge {
 	project {
 		id = '310323'
 		changelog = parseChangelog('changelog.txt')
-		releaseType = 'beta'
+		releaseType = 'release'
 		addGameVersion '1.14-Snapshot'
 		mainArtifact(jar) {
 			displayName = "ExtraGamerules-${mcVersion}-${project.version}"
