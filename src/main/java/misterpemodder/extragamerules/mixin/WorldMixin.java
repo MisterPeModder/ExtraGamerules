@@ -34,6 +34,7 @@ public final class WorldMixin implements WorldHook {
   private double horseTrapSpawningChance = DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE;
   private boolean doInsomnia = DefaultValues.DO_INSOMNIA;
   private boolean tntExplodes = DefaultValues.TNT_EXPLODES;
+  private float explosionPowerModifer = DefaultValues.EXPLOSION_POWER_MODIFER;
 
   @Override
   public int getLightningProbability() {
@@ -106,6 +107,16 @@ public final class WorldMixin implements WorldHook {
     this.tntExplodes = value;
   }
 
+  @Override
+  public float getExplosionPowerModifier() {
+    return this.explosionPowerModifer;
+  }
+
+  @Override
+  public void setExplosionPowerModifier(float value) {
+    this.explosionPowerModifer = value;
+  }
+
   @Inject(at = @At("RETURN"), method = "<init>")
   public void onConstruct(CallbackInfo ci) {
     this.customRandom = new BoundsControllingRandom(this.random);
@@ -126,6 +137,8 @@ public final class WorldMixin implements WorldHook {
           GameRulesUtil.getBoolean(rules.get("doInsomnia"), DefaultValues.DO_INSOMNIA);
       this.tntExplodes =
           GameRulesUtil.getBoolean(rules.get("tntExplodes"), DefaultValues.TNT_EXPLODES);
+      this.explosionPowerModifer = GameRulesUtil.getFloat(rules.get("explosionPowerModifier"),
+          DefaultValues.EXPLOSION_POWER_MODIFER);
     }
   }
 

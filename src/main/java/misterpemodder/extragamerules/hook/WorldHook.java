@@ -28,4 +28,8 @@ public interface WorldHook {
   boolean getTntExplodes();
 
   void setTntExplodes(boolean value);
+
+  float getExplosionPowerModifier();
+
+  void setExplosionPowerModifier(float value);
 }

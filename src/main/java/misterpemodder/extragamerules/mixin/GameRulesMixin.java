@@ -61,5 +61,11 @@ public final class GameRulesMixin {
         Type.BOOLEAN, (world, value) -> {
           world.setTntExplodes(value.getBoolean());
         });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "explosionPowerModifier",
+        DefaultValues.EXPLOSION_POWER_MODIFER, Type.STRING, (world, value) -> {
+          world.setExplosionPowerModifier(Float.parseFloat(value.getString()));
+        }, (value) -> {
+          return Float.parseFloat(value.getString()) >= 0f;
+        });
   }
 }

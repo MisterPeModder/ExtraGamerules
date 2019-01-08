@@ -5,6 +5,7 @@
   "mixins": [
     "Class2910Mixin",
     "EntityMixin",
+    "ExplosionMixin",
     "GameRulesMixin",
     "LightningEntityMixin",
     "PrimedTNTEntityMixin",
