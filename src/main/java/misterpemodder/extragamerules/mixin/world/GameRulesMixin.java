@@ -1,4 +1,4 @@
-package misterpemodder.extragamerules.mixin;
+package misterpemodder.extragamerules.mixin.world;
 
 import java.util.TreeMap;
 import org.spongepowered.asm.mixin.Mixin;
@@ -66,6 +66,10 @@ public final class GameRulesMixin {
           world.setExplosionPowerModifier(Float.parseFloat(value.getString()));
         }, (value) -> {
           return Float.parseFloat(value.getString()) >= 0f;
+        });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "pvp", DefaultValues.UNINITIALIZED, Type.BOOLEAN,
+        (world, value) -> {
+          world.setPvpEnabled(value.getBoolean());
         });
   }
 }

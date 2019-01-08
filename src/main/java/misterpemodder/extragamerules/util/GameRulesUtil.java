@@ -3,7 +3,7 @@ package misterpemodder.extragamerules.util;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
-import misterpemodder.extragamerules.hook.WorldHook;
+import misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Key;
@@ -49,7 +49,7 @@ public final class GameRulesUtil {
     }
   }
 
-  public static <T extends ServerWorld & WorldHook> void registerWorldHookGamerule(
+  public static <T extends ServerWorld & ServerWorldHook> void registerWorldHookGamerule(
       Map<String, Key> map, String name, Object defaultValue, Type type,
       BiConsumer<T, Value> handler) {
     registerWorldHookGamerule(map, name, defaultValue, type, handler, null);
@@ -66,7 +66,7 @@ public final class GameRulesUtil {
    * @param validator    returns false if the value is invalid and should be set to default.
    */
   @SuppressWarnings("unchecked")
-  public static <T extends ServerWorld & WorldHook> void registerWorldHookGamerule(
+  public static <T extends ServerWorld & ServerWorldHook> void registerWorldHookGamerule(
       Map<String, Key> map, String name, Object defaultValue, Type type,
       BiConsumer<T, Value> handler, Predicate<Value> validator) {
     map.put(name, new Key(defaultValue.toString(), type, (server, value) -> {
@@ -77,7 +77,7 @@ public final class GameRulesUtil {
         value.set(defaultValue.toString(), server);
       }
       for (ServerWorld world : server.getWorlds()) {
-        if (world instanceof WorldHook) {
+        if (world instanceof ServerWorldHook) {
           try {
             handler.accept((T) world, value);
           } catch (NumberFormatException e) {
@@ -85,5 +85,10 @@ public final class GameRulesUtil {
         }
       }
     }));
+  }
+
+  public static boolean isInitialized(GameRules rules, String key) {
+    Value value = rules.get(key);
+    return value != null && value.getString() != DefaultValues.UNINITIALIZED;
   }
 }

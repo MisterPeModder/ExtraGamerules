@@ -1,9 +1,9 @@
-package misterpemodder.extragamerules.mixin;
+package misterpemodder.extragamerules.mixin.entity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import misterpemodder.extragamerules.hook.WorldHook;
+import misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.class_2910;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -15,7 +15,7 @@ public final class Class2910Mixin {
       ordinal = 0), method = "spawn(Lnet/minecraft/world/World;ZZ)I")
   private int changeInsomniaTime(int value, int min, int max, World world, boolean boolean_1,
       boolean boolean_2) {
-    if (world instanceof WorldHook && !((WorldHook) world).isInsomniaEnabled())
+    if (world instanceof ServerWorldHook && !((ServerWorldHook) world).isInsomniaEnabled())
       return 1;
     return MathHelper.clamp(value, min, max);
   }

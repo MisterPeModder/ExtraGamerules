@@ -1,31 +1,39 @@
-package misterpemodder.extragamerules.mixin;
+package misterpemodder.extragamerules.mixin.world;
 
-import java.util.Random;
-import org.objectweb.asm.Opcodes;
+import java.util.function.BiFunction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.hook.WorldHook;
+import misterpemodder.extragamerules.hook.ServerWorldHook;
 import misterpemodder.extragamerules.util.BoundsControllingRandom;
 import misterpemodder.extragamerules.util.DefaultValues;
 import misterpemodder.extragamerules.util.GameRulesUtil;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Profiler;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSaveHandler;
+import net.minecraft.world.chunk.ChunkManager;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.level.LevelProperties;
 
-@Mixin(World.class)
-public final class WorldMixin implements WorldHook {
+@Mixin(ServerWorld.class)
+public abstract class ServerWorldMixin extends World implements ServerWorldHook {
+  protected ServerWorldMixin(WorldSaveHandler worldSaveHandler_1,
+      PersistentStateManager persistentStateManager_1, LevelProperties levelProperties_1,
+      DimensionType dimensionType_1, BiFunction<World, Dimension, ChunkManager> biFunction_1,
+      Profiler profiler_1, boolean boolean_1) {
+    super(worldSaveHandler_1, persistentStateManager_1, levelProperties_1, dimensionType_1,
+        biFunction_1, profiler_1, boolean_1);
+  }
+
   @Shadow
-  public Random random;
-  @Shadow
-  protected LevelProperties properties;
-  @Shadow
-  public boolean isClient;
+  private MinecraftServer server;
 
   private BoundsControllingRandom customRandom = null;
   private boolean lightningSpawnsFire = DefaultValues.LIGHTNING_FIRE;
@@ -117,42 +125,38 @@ public final class WorldMixin implements WorldHook {
     this.explosionPowerModifer = value;
   }
 
+  @Override
+  public boolean isPvpEnabled() {
+    return this.server.isPvpEnabled();
+  }
+
+  @Override
+  public void setPvpEnabled(boolean value) {
+    this.server.setPvpEnabled(value);
+  }
+
   @Inject(at = @At("RETURN"), method = "<init>")
   public void onConstruct(CallbackInfo ci) {
     this.customRandom = new BoundsControllingRandom(this.random);
     GameRules rules = this.properties.getGameRules();
-    if (!this.isClient) {
-      this.customRandom.setBound(GameRulesUtil.getInt(rules.get("lightningProbability"),
-          DefaultValues.LIGHTNING_PROBABILITY));
-      this.lightningSpawnsFire =
-          GameRulesUtil.getBoolean(rules.get("lightningFire"), DefaultValues.LIGHTNING_FIRE);
-      this.lightningDamage =
-          GameRulesUtil.getFloat(rules.get("lightningDamage"), DefaultValues.LIGHTNING_DAMAGE);
-      this.lightningRange =
-          GameRulesUtil.getDouble(rules.get("lightningRange"), DefaultValues.LIGHTNING_RANGE);
-      this.horseTrapSpawningChance =
-          GameRulesUtil.getDouble(rules.get("lightningHorseSpawningModifier"),
-              DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE);
-      this.doInsomnia =
-          GameRulesUtil.getBoolean(rules.get("doInsomnia"), DefaultValues.DO_INSOMNIA);
-      this.tntExplodes =
-          GameRulesUtil.getBoolean(rules.get("tntExplodes"), DefaultValues.TNT_EXPLODES);
-      this.explosionPowerModifer = GameRulesUtil.getFloat(rules.get("explosionPowerModifier"),
-          DefaultValues.EXPLOSION_POWER_MODIFER);
-    }
-  }
+    this.customRandom.setBound(GameRulesUtil.getInt(rules.get("lightningProbability"),
+        DefaultValues.LIGHTNING_PROBABILITY));
+    this.lightningSpawnsFire =
+        GameRulesUtil.getBoolean(rules.get("lightningFire"), DefaultValues.LIGHTNING_FIRE);
+    this.lightningDamage =
+        GameRulesUtil.getFloat(rules.get("lightningDamage"), DefaultValues.LIGHTNING_DAMAGE);
+    this.lightningRange =
+        GameRulesUtil.getDouble(rules.get("lightningRange"), DefaultValues.LIGHTNING_RANGE);
+    this.horseTrapSpawningChance = GameRulesUtil.getDouble(
+        rules.get("lightningHorseSpawningModifier"), DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE);
+    this.doInsomnia = GameRulesUtil.getBoolean(rules.get("doInsomnia"), DefaultValues.DO_INSOMNIA);
+    this.tntExplodes =
+        GameRulesUtil.getBoolean(rules.get("tntExplodes"), DefaultValues.TNT_EXPLODES);
+    this.explosionPowerModifer = GameRulesUtil.getFloat(rules.get("explosionPowerModifier"),
+        DefaultValues.EXPLOSION_POWER_MODIFER);
 
-  @Redirect(
-      at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;random:Ljava/util/Random;",
-          opcode = Opcodes.GETFIELD, ordinal = 0),
-      method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V")
-  private Random getFieldValue(World owner) {
-    return this.customRandom;
-  }
-
-  @ModifyConstant(constant = @Constant(doubleValue = 0.01, ordinal = 0),
-      method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V")
-  private double modifyHorseSpawningChance(double original) {
-    return this.horseTrapSpawningChance;
+    // If pvp rule doesn't exist yet, set it from the server.
+    if (!GameRulesUtil.isInitialized(rules, "pvp"))
+      rules.put("pvp", Boolean.toString(this.server.isPvpEnabled()), this.server);
   }
 }

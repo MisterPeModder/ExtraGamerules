@@ -1,6 +1,6 @@
 package misterpemodder.extragamerules.hook;
 
-public interface WorldHook {
+public interface ServerWorldHook {
   int getLightningProbability();
 
   void setLightningProbability(int value);
@@ -32,4 +32,8 @@ public interface WorldHook {
   float getExplosionPowerModifier();
 
   void setExplosionPowerModifier(float value);
+
+  boolean isPvpEnabled();
+
+  void setPvpEnabled(boolean value);
 }

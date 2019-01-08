@@ -3,13 +3,14 @@
   "package": "misterpemodder.extragamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "Class2910Mixin",
-    "EntityMixin",
-    "ExplosionMixin",
-    "GameRulesMixin",
-    "LightningEntityMixin",
-    "PrimedTNTEntityMixin",
-    "WorldMixin"
+    "entity.Class2910Mixin",
+    "entity.EntityMixin",
+    "entity.LightningEntityMixin",
+    "entity.PrimedTNTEntityMixin",
+    "world.ExplosionMixin",
+    "world.GameRulesMixin",
+    "world.ServerWorldMixin",
+    "world.WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
