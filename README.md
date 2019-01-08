@@ -19,7 +19,16 @@ Damage dealt by ligthing (default: 5.0)
 Entites inside this range will be damaged by ligthning (default: 3.0)
 
 - lightningHorseSpawningModifier:  <code>/gamerule lightningHorseSpawningModifier &lt;double&gt;</code>  
-Controls how often horse traps should spawn. (default 0.01)
+Controls how often horse traps should spawn. (default: 0.01)
+
+- doInsomnia:  <code>/gamerule doInsomnia &lt;boolean&gt;</code>  
+Enables/disables phantom spawning. (default: true)
+
+- tntExplodes:  <code>/gamerule tntExplodes &lt;boolean&gt;</code>  
+Enables/disables tnt explosion. (default: true)
+
+- explosionPowerModifier:  <code>/gamerule explosionPowerModifier &lt;float&gt;</code>  
+Adjusts power of all explosions by multiplying it to the actual explosion power. (default: 1.0)
 
 You can reset a numerical gamerule to its default value by setting to a negative value.
 
