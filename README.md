@@ -30,6 +30,12 @@ Enables/disables tnt explosion. (default: true)
 - explosionPowerModifier:  <code>/gamerule explosionPowerModifier &lt;float&gt;</code>  
 Adjusts power of all explosions by multiplying it to the actual explosion power. (default: 1.0)
 
+- pvp:  <code>/gamerule pvp &lt;boolean&gt;</code>  
+Enables/disables pvp combat. (default: true on singleplayer, on servers, depends on the `pvp` property in server.properties)
+
+- drowningDamage, fallDamage, fireDamage:  <code>/gamerule drowningDamage &lt;boolean&gt;</code>  
+Enables/disables drowning, fall or fire damage, respectively. (default: true)
+
 You can reset a numerical gamerule to its default value by setting to a negative value.
 
 This mod requires Fabric (https://minecraft.curseforge.com/projects/fabric).

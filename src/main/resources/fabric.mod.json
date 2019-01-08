@@ -2,7 +2,7 @@
   "id": "extra-gamerules",
   "name": "Extra Gamerules",
   "description": "Adds a bunch of new gamerules!",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "side": "universal",
   "initializers": [],
   "requires": {
