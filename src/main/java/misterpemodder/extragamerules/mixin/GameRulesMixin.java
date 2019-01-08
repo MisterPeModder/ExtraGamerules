@@ -57,5 +57,9 @@ public final class GameRulesMixin {
         Type.BOOLEAN, (world, value) -> {
           world.setInsomniaEnabled(value.getBoolean());
         });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "tntExplodes", DefaultValues.TNT_EXPLODES,
+        Type.BOOLEAN, (world, value) -> {
+          world.setTntExplodes(value.getBoolean());
+        });
   }
 }

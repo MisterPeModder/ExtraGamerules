@@ -24,4 +24,8 @@ public interface WorldHook {
   boolean isInsomniaEnabled();
 
   void setInsomniaEnabled(boolean value);
+
+  boolean getTntExplodes();
+
+  void setTntExplodes(boolean value);
 }

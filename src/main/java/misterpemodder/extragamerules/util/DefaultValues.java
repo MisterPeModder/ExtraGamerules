@@ -7,4 +7,5 @@ public final class DefaultValues {
   public static final double LIGHTNING_RANGE = 3.0;
   public static final double LIGHTNING_HORSE_SPAWNING_CHANCE = 0.01;
   public static final boolean DO_INSOMNIA = true;
+  public static final boolean TNT_EXPLODES = true;
 }
