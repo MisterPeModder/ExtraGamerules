@@ -2,7 +2,7 @@ ExtraGamerules [![](http://cf.way2muchnoise.eu/full_310323_downloads.svg)](https
 [![](http://cf.way2muchnoise.eu/versions/For%20MC_310323_all.svg)](https://minecraft.curseforge.com/projects/extragamerules)
 =========================
 
-This mod adds some gamerules that allows lightning to be fully configurable.
+This mod adds a bunch a new gamerules and some from the bedrock edition of the game.
 
 #### Gamerules:
 
