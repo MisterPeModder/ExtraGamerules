@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "entity.Class2910Mixin",
+    "entity.damage.DamageSourceMixin",
     "entity.EntityMixin",
     "entity.LightningEntityMixin",
     "entity.PrimedTNTEntityMixin",

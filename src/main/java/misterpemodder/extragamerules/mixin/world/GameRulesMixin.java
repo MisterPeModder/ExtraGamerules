@@ -71,5 +71,17 @@ public final class GameRulesMixin {
         (world, value) -> {
           world.setPvpEnabled(value.getBoolean());
         });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "drowningDamage", DefaultValues.DROWNING_DAMAGE,
+        Type.BOOLEAN, (world, value) -> {
+          world.setDrowningDamageEnabled(value.getBoolean());
+        });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "fallDamage", DefaultValues.FALL_DAMAGE,
+        Type.BOOLEAN, (world, value) -> {
+          world.setFallDamageEnabled(value.getBoolean());
+        });
+    GameRulesUtil.registerWorldHookGamerule(KEYS, "fireDamage", DefaultValues.FIRE_DAMAGE,
+        Type.BOOLEAN, (world, value) -> {
+          world.setFireDamageEnabled(value.getBoolean());
+        });
   }
 }

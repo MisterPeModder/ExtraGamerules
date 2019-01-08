@@ -36,4 +36,16 @@ public interface ServerWorldHook {
   boolean isPvpEnabled();
 
   void setPvpEnabled(boolean value);
+
+  boolean isDrowningDamageEnabled();
+
+  void setDrowningDamageEnabled(boolean value);
+
+  boolean isFallDamageEnabled();
+
+  void setFallDamageEnabled(boolean value);
+
+  boolean isFireDamageEnabled();
+
+  void setFireDamageEnabled(boolean value);
 }

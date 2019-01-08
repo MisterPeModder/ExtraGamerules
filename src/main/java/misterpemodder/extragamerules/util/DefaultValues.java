@@ -10,5 +10,8 @@ public final class DefaultValues {
   public static final boolean TNT_EXPLODES = true;
   public static final float EXPLOSION_POWER_MODIFER = 1.0f;
   public static final boolean PVP_ENABLED = true;
+  public static final boolean DROWNING_DAMAGE = true;
+  public static final boolean FALL_DAMAGE = true;
+  public static final boolean FIRE_DAMAGE = true;
   public static final String UNINITIALIZED = "<uninitialized>";
 }

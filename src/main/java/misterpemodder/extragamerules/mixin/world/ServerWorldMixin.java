@@ -43,6 +43,9 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
   private boolean doInsomnia = DefaultValues.DO_INSOMNIA;
   private boolean tntExplodes = DefaultValues.TNT_EXPLODES;
   private float explosionPowerModifer = DefaultValues.EXPLOSION_POWER_MODIFER;
+  private boolean drowningDamage = DefaultValues.DROWNING_DAMAGE;
+  private boolean fallDamage = DefaultValues.FALL_DAMAGE;
+  private boolean fireDamage = DefaultValues.FIRE_DAMAGE;
 
   @Override
   public int getLightningProbability() {
@@ -133,6 +136,36 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
   @Override
   public void setPvpEnabled(boolean value) {
     this.server.setPvpEnabled(value);
+  }
+
+  @Override
+  public boolean isDrowningDamageEnabled() {
+    return this.drowningDamage;
+  }
+
+  @Override
+  public void setDrowningDamageEnabled(boolean value) {
+    this.drowningDamage = value;
+  }
+
+  @Override
+  public boolean isFallDamageEnabled() {
+    return this.fallDamage;
+  }
+
+  @Override
+  public void setFallDamageEnabled(boolean value) {
+    this.fallDamage = value;
+  }
+
+  @Override
+  public boolean isFireDamageEnabled() {
+    return this.fireDamage;
+  }
+
+  @Override
+  public void setFireDamageEnabled(boolean value) {
+    this.fireDamage = value;
   }
 
   @Inject(at = @At("RETURN"), method = "<init>")
