@@ -1,4 +1,5 @@
-ExtraGamerules
+ExtraGamerules [![](http://cf.way2muchnoise.eu/full_310323_downloads.svg)](https://minecraft.curseforge.com/projects/extragamerules)
+[![](http://cf.way2muchnoise.eu/versions/For%20MC_310323_all.svg)](https://minecraft.curseforge.com/projects/extragamerules)
 =========================
 
 This mod adds some gamerules that allows lightning to be fully configurable.
