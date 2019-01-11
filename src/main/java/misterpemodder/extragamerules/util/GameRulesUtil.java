@@ -1,94 +1,50 @@
 package misterpemodder.extragamerules.util;
 
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 import misterpemodder.extragamerules.hook.ServerWorldHook;
+import misterpemodder.extragamerules.util.ExtendedGameRule.Type;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.GameRules.Key;
-import net.minecraft.world.GameRules.Type;
-import net.minecraft.world.GameRules.Value;
 
 public final class GameRulesUtil {
-  public static int getInt(Value value, int defaultValue) {
-    if (value == null || value.getType() != GameRules.Type.INTEGER)
-      return defaultValue;
-    return value.getInteger();
-  }
-
-  public static boolean getBoolean(Value value, boolean defaultValue) {
-    if (value == null || value.getType() != GameRules.Type.BOOLEAN)
-      return defaultValue;
-    return value.getBoolean();
-  }
-
-  public static String getString(Value value, String defaultValue) {
-    if (value == null || value.getType() != GameRules.Type.STRING)
-      return defaultValue;
-    return value.getString();
-  }
-
-  public static float getFloat(Value value, float defaultValue) {
-    if (value == null || value.getType() != GameRules.Type.STRING)
-      return defaultValue;
-    try {
-      return Float.parseFloat(value.getString());
-    } catch (NumberFormatException e) {
-      return defaultValue;
-    }
-  }
-
-  public static double getDouble(Value value, double defaultValue) {
-    if (value == null || value.getType() != GameRules.Type.STRING)
-      return defaultValue;
-    try {
-      return Double.parseDouble(value.getString());
-    } catch (NumberFormatException e) {
-      return defaultValue;
-    }
-  }
-
-  public static <T extends ServerWorld & ServerWorldHook> void registerWorldHookGamerule(
-      Map<String, Key> map, String name, Object defaultValue, Type type,
-      BiConsumer<T, Value> handler) {
-    registerWorldHookGamerule(map, name, defaultValue, type, handler, null);
-  };
-
-  /**
-   * Registers a gamerule in the given map.
-   * 
-   * @param map          The registry
-   * @param name         Name of the gamerule
-   * @param defaultValue Its default value
-   * @param type         Its type.
-   * @param handler      Executed for each world when the gamerule is changed.
-   * @param validator    returns false if the value is invalid and should be set to default.
-   */
-  @SuppressWarnings("unchecked")
-  public static <T extends ServerWorld & ServerWorldHook> void registerWorldHookGamerule(
-      Map<String, Key> map, String name, Object defaultValue, Type type,
-      BiConsumer<T, Value> handler, Predicate<Value> validator) {
-    map.put(name, new Key(defaultValue.toString(), type, (server, value) -> {
-      try {
-        if (validator != null && !validator.test(value))
-          value.set(defaultValue.toString(), server);
-      } catch (NumberFormatException e) {
-        value.set(defaultValue.toString(), server);
+  public static void registerEGGameRules(Map<String, GameRules.Key> keys) {
+    ExtendedGameRule.create("lightningProbability", Type.INT, DefaultValues.LIGHTNING_PROBABILITY,
+        ServerWorldHook::setLightningProbability, ServerWorldHook::getLightningProbability,
+        ExtendedGameRule::validatePositive);
+    ExtendedGameRule.create("lightningFire", Type.BOOLEAN, DefaultValues.LIGHTNING_FIRE,
+        ServerWorldHook::setLightningSpawningFire, ServerWorldHook::getLightningSpawningFire);
+    ExtendedGameRule.create("lightningDamage", Type.FLOAT, DefaultValues.LIGHTNING_DAMAGE,
+        ServerWorldHook::setLightningDamage, ServerWorldHook::getLightningDamage,
+        ExtendedGameRule::validatePositive);
+    ExtendedGameRule.create("lightningRange", Type.DOUBLE, DefaultValues.LIGHTNING_RANGE,
+        ServerWorldHook::setLightningRange, ServerWorldHook::getLightningRange,
+        ExtendedGameRule::validatePositive);
+    ExtendedGameRule.create("lightningHorseSpawningModifier", Type.DOUBLE,
+        DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE, ServerWorldHook::setHorseTrapSpawingChance,
+        ServerWorldHook::getHorseTrapSpawningChance, ExtendedGameRule::validatePositive);
+    ExtendedGameRule.create("doInsomnia", Type.BOOLEAN, DefaultValues.DO_INSOMNIA,
+        ServerWorldHook::setInsomniaEnabled, ServerWorldHook::isInsomniaEnabled);
+    ExtendedGameRule.create("tntExplodes", Type.BOOLEAN, DefaultValues.TNT_EXPLODES,
+        ServerWorldHook::setTntExplodes, ServerWorldHook::getTntExplodes);
+    ExtendedGameRule.create("explosionPowerModifier", Type.FLOAT,
+        DefaultValues.EXPLOSION_POWER_MODIFER, ServerWorldHook::setExplosionPowerModifier,
+        ServerWorldHook::getExplosionPowerModifier, ExtendedGameRule::validatePositive);
+    new ExtendedGameRule<Boolean>(Type.BOOLEAN, DefaultValues.PVP_ENABLED,
+        ServerWorldHook::setPvpEnabled, ServerWorldHook::isPvpEnabled,
+        ExtendedGameRule::validateAlways) {
+      @Override
+      public <W extends ServerWorld & ServerWorldHook> void initialize(W world) {
+        MinecraftServer server = world.getServer();
+        setValue(server, server.isPvpEnabled());
       }
-      for (ServerWorld world : server.getWorlds()) {
-        if (world instanceof ServerWorldHook) {
-          try {
-            handler.accept((T) world, value);
-          } catch (NumberFormatException e) {
-          }
-        }
-      }
-    }));
-  }
-
-  public static boolean isInitialized(GameRules rules, String key) {
-    Value value = rules.get(key);
-    return value != null && value.getString() != DefaultValues.UNINITIALIZED;
+    }.register("pvp");
+    ExtendedGameRule.create("drowningDamage", Type.BOOLEAN, DefaultValues.DROWNING_DAMAGE,
+        ServerWorldHook::setDrowningDamageEnabled, ServerWorldHook::isDrowningDamageEnabled);
+    ExtendedGameRule.create("fallDamage", Type.BOOLEAN, DefaultValues.FALL_DAMAGE,
+        ServerWorldHook::setFallDamageEnabled, ServerWorldHook::isFallDamageEnabled);
+    ExtendedGameRule.create("fireDamage", Type.BOOLEAN, DefaultValues.FIRE_DAMAGE,
+        ServerWorldHook::setFireDamageEnabled, ServerWorldHook::isFireDamageEnabled);
+    IExtendedGameRule.registerAll(keys);
   }
 }

@@ -7,9 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import misterpemodder.extragamerules.hook.ServerWorldHook;
-import misterpemodder.extragamerules.util.BoundsControllingRandom;
 import misterpemodder.extragamerules.util.DefaultValues;
-import misterpemodder.extragamerules.util.GameRulesUtil;
+import misterpemodder.extragamerules.util.IExtendedGameRule;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.profiler.Profiler;
@@ -35,7 +34,7 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
   @Shadow
   private MinecraftServer server;
 
-  private BoundsControllingRandom customRandom = null;
+  private int lightningProbabilityBound = DefaultValues.LIGHTNING_PROBABILITY;
   private boolean lightningSpawnsFire = DefaultValues.LIGHTNING_FIRE;
   private float lightningDamage = DefaultValues.LIGHTNING_DAMAGE;
   private double lightningRange = DefaultValues.LIGHTNING_RANGE;
@@ -49,12 +48,12 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
 
   @Override
   public int getLightningProbability() {
-    return this.customRandom.getBound();
+    return this.lightningProbabilityBound;
   }
 
   @Override
   public void setLightningProbability(int value) {
-    this.customRandom.setBound(value);
+    this.lightningProbabilityBound = value == 0 ? Integer.MAX_VALUE : value;
   }
 
   @Override
@@ -168,32 +167,18 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
     this.fireDamage = value;
   }
 
+  @SuppressWarnings("unchecked")
   @Inject(at = @At("RETURN"), method = "<init>")
-  public void onConstruct(CallbackInfo ci) {
-    this.customRandom = new BoundsControllingRandom(this.random);
+  public <W extends ServerWorld & ServerWorldHook> void onConstruct(CallbackInfo ci) {
     GameRules rules = this.properties.getGameRules();
-    this.customRandom.setBound(GameRulesUtil.getInt(rules.get("lightningProbability"),
-        DefaultValues.LIGHTNING_PROBABILITY));
-    this.lightningSpawnsFire =
-        GameRulesUtil.getBoolean(rules.get("lightningFire"), DefaultValues.LIGHTNING_FIRE);
-    this.lightningDamage =
-        GameRulesUtil.getFloat(rules.get("lightningDamage"), DefaultValues.LIGHTNING_DAMAGE);
-    this.lightningRange =
-        GameRulesUtil.getDouble(rules.get("lightningRange"), DefaultValues.LIGHTNING_RANGE);
-    this.horseTrapSpawningChance = GameRulesUtil.getDouble(
-        rules.get("lightningHorseSpawningModifier"), DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE);
-    this.doInsomnia = GameRulesUtil.getBoolean(rules.get("doInsomnia"), DefaultValues.DO_INSOMNIA);
-    this.tntExplodes =
-        GameRulesUtil.getBoolean(rules.get("tntExplodes"), DefaultValues.TNT_EXPLODES);
-    this.explosionPowerModifer = GameRulesUtil.getFloat(rules.get("explosionPowerModifier"),
-        DefaultValues.EXPLOSION_POWER_MODIFER);
-    this.drowningDamage =
-        GameRulesUtil.getBoolean(rules.get("drowningDamage"), DefaultValues.DROWNING_DAMAGE);
-    this.fallDamage = GameRulesUtil.getBoolean(rules.get("fallDamage"), DefaultValues.FALL_DAMAGE);
-    this.fireDamage = GameRulesUtil.getBoolean(rules.get("fireDamage"), DefaultValues.FIRE_DAMAGE);
 
-    // If pvp rule doesn't exist yet, set it from the server.
-    if (!GameRulesUtil.isInitialized(rules, "pvp"))
-      rules.put("pvp", Boolean.toString(this.server.isPvpEnabled()), this.server);
+    for (String name : IExtendedGameRule.RULES.keySet()) {
+      IExtendedGameRule<Object> rule =
+          (IExtendedGameRule<Object>) IExtendedGameRule.RULES.get(name);
+      GameRules.Value value = rules.get(name);
+      rule.setValue(this.server,
+          value == null ? rule.getDefaultValue() : rule.parseValue(value.getString()));
+      rule.initialize((W) (Object) this);
+    }
   }
 }
