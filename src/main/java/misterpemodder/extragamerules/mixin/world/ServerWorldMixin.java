@@ -12,7 +12,7 @@ import misterpemodder.extragamerules.util.DefaultValues;
 import misterpemodder.extragamerules.util.GameRulesUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Profiler;
+import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
