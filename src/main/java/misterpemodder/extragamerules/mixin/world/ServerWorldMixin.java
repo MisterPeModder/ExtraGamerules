@@ -187,6 +187,10 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
         GameRulesUtil.getBoolean(rules.get("tntExplodes"), DefaultValues.TNT_EXPLODES);
     this.explosionPowerModifer = GameRulesUtil.getFloat(rules.get("explosionPowerModifier"),
         DefaultValues.EXPLOSION_POWER_MODIFER);
+    this.drowningDamage =
+        GameRulesUtil.getBoolean(rules.get("drowningDamage"), DefaultValues.DROWNING_DAMAGE);
+    this.fallDamage = GameRulesUtil.getBoolean(rules.get("fallDamage"), DefaultValues.FALL_DAMAGE);
+    this.fireDamage = GameRulesUtil.getBoolean(rules.get("fireDamage"), DefaultValues.FIRE_DAMAGE);
 
     // If pvp rule doesn't exist yet, set it from the server.
     if (!GameRulesUtil.isInitialized(rules, "pvp"))
