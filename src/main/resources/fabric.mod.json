@@ -14,9 +14,7 @@
   },
   "side": "universal",
   "initializers": [],
-  "requires": {
-    "fabric": "*"
-  },
+  "requires": {},
   "mixins": {
     "client": "extra-gamerules.client.json",
     "common": "extra-gamerules.common.json"

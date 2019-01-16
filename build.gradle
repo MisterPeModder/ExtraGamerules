@@ -8,16 +8,15 @@ targetCompatibility = 1.8
 
 archivesBaseName = "extra-gamerules"
 version = "1.2.1"
-def mcVersion = "19w02a"
+def mcVersion = "19w03a"
 
 minecraft {
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
-	mappings "net.fabricmc:yarn:$mcVersion.13"
-	modCompile "net.fabricmc:fabric-loader:0.3.2.92"
-	modCompile "net.fabricmc:fabric:0.1.4.71"
+	mappings "net.fabricmc:yarn:$mcVersion.3"
+	modCompile "net.fabricmc:fabric-loader:0.3.2.96"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -57,7 +56,7 @@ curseforge {
 			displayName = "ExtraGamerules-${mcVersion}-${project.version}"
 		}
 		relations {
-      requiredDependency 'fabric'
+      optionalDependency 'fabric'
     }
 	}
 	options {
