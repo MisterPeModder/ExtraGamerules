@@ -1,4 +1,4 @@
-package misterpemodder.extragamerules.util;
+package misterpemodder.extragamerules;
 
 public final class DefaultValues {
   public static final int LIGHTNING_PROBABILITY = 100000;

@@ -13,7 +13,9 @@
     "sources": "https://github.com/MisterPeModder/ExtraGamerules"
   },
   "side": "universal",
-  "initializers": [],
+  "initializers": [
+    "misterpemodder.extragamerules.ExtraGameRules"
+  ],
   "requires": {},
   "mixins": {
     "client": "extra-gamerules.client.json",

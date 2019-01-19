@@ -3,7 +3,7 @@ package misterpemodder.extragamerules.hook;
 import net.minecraft.entity.Entity;
 
 /**
- * Extended by {@link net.minecraft.entity.damage.DamageSource}
+ * Implemented by {@link net.minecraft.entity.damage.DamageSource}
  */
 public interface FilterableDamageSource {
   /**

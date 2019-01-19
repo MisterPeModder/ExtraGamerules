@@ -1,4 +1,4 @@
-package misterpemodder.extragamerules.gui;
+package misterpemodder.customgamerules.gui;
 
 import java.util.List;
 import org.lwjgl.glfw.GLFW;
@@ -96,7 +96,7 @@ public class EditGameRulesGui extends Gui {
   public void draw(final int mouseX, final int mouseY, final float delta) {
     drawBackground();
     this.gameRuleList.draw(mouseX, mouseY, delta);
-    this.drawString(this.fontRenderer, I18n.translate("extragamerules.search"),
+    this.drawString(this.fontRenderer, I18n.translate("customgamerules.search"),
         this.width / 2 - 100, 9, 0xa0a0a0);
     this.textField.render(mouseX, mouseY, delta);
     super.draw(mouseX, mouseY, delta);

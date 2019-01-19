@@ -1,6 +1,11 @@
 package misterpemodder.extragamerules.hook;
 
-public interface ServerWorldHook {
+import net.minecraft.server.MinecraftServer;
+
+/**
+ * Extended by {@link MinecraftServer}
+ */
+public interface MinecraftServerHook {
   int getLightningProbability();
 
   void setLightningProbability(int value);

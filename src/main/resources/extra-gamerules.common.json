@@ -1,17 +1,17 @@
 {
   "required": true,
-  "package": "misterpemodder.extragamerules.mixin",
+  "package": "misterpemodder",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "entity.damage.DamageSourceMixin",
-    "entity.EntityMixin",
-    "entity.LightningEntityMixin",
-    "entity.PrimedTNTEntityMixin",
-    "world.ExplosionMixin",
-    "world.GameRulesMixin",
-    "world.PhantomSpawnerMixin",
-    "world.ServerWorldMixin",
-    "world.WorldMixin"
+    "customgamerules.mixin.GameRulesKeyMixin",
+    "extragamerules.mixin.entity.damage.DamageSourceMixin",
+    "extragamerules.mixin.entity.EntityMixin",
+    "extragamerules.mixin.entity.LightningEntityMixin",
+    "extragamerules.mixin.entity.PrimedTNTEntityMixin",
+    "extragamerules.mixin.world.ExplosionMixin",
+    "extragamerules.mixin.world.MinecraftServerMixin",
+    "extragamerules.mixin.world.PhantomSpawnerMixin",
+    "extragamerules.mixin.world.WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

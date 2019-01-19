@@ -17,6 +17,9 @@ dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
 	mappings "net.fabricmc:yarn:$mcVersion.3"
 	modCompile "net.fabricmc:fabric-loader:0.3.2.96"
+
+	// Nullable annotations.
+	compile "com.google.code.findbugs:jsr305:3.0.0"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

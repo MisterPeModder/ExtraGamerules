@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "misterpemodder.extragamerules.mixin",
+  "package": "misterpemodder.customgamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "world.BackupLevelGuiMixin"
+    "BackupLevelGuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

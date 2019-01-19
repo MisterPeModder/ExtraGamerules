@@ -1,39 +1,17 @@
 package misterpemodder.extragamerules.mixin.world;
 
-import java.util.function.BiFunction;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.hook.ServerWorldHook;
-import misterpemodder.extragamerules.util.DefaultValues;
-import misterpemodder.extragamerules.util.IExtendedGameRule;
+import misterpemodder.extragamerules.hook.MinecraftServerHook;
+import misterpemodder.extragamerules.DefaultValues;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.profiler.Profiler;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSaveHandler;
-import net.minecraft.world.chunk.ChunkManager;
-import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.level.LevelProperties;
 
-@Mixin(ServerWorld.class)
-public abstract class ServerWorldMixin extends World implements ServerWorldHook {
-  protected ServerWorldMixin(WorldSaveHandler worldSaveHandler_1,
-      PersistentStateManager persistentStateManager_1, LevelProperties levelProperties_1,
-      DimensionType dimensionType_1, BiFunction<World, Dimension, ChunkManager> biFunction_1,
-      Profiler profiler_1, boolean boolean_1) {
-    super(worldSaveHandler_1, persistentStateManager_1, levelProperties_1, dimensionType_1,
-        biFunction_1, profiler_1, boolean_1);
-  }
-
-  @Shadow
-  private MinecraftServer server;
-
+// TODO move all getters out of this mixin into their own class.
+@Mixin(MinecraftServer.class)
+public class MinecraftServerMixin implements MinecraftServerHook {
   private int lightningProbabilityBound = DefaultValues.LIGHTNING_PROBABILITY;
   private boolean lightningSpawnsFire = DefaultValues.LIGHTNING_FIRE;
   private float lightningDamage = DefaultValues.LIGHTNING_DAMAGE;
@@ -129,12 +107,12 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
 
   @Override
   public boolean isPvpEnabled() {
-    return this.server.isPvpEnabled();
+    return ((MinecraftServer) (Object) this).isPvpEnabled();
   }
 
   @Override
   public void setPvpEnabled(boolean value) {
-    this.server.setPvpEnabled(value);
+    ((MinecraftServer) (Object) this).setPvpEnabled(value);
   }
 
   @Override
@@ -167,18 +145,16 @@ public abstract class ServerWorldMixin extends World implements ServerWorldHook 
     this.fireDamage = value;
   }
 
-  @SuppressWarnings("unchecked")
   @Inject(at = @At("RETURN"), method = "<init>")
-  public <W extends ServerWorld & ServerWorldHook> void onConstruct(CallbackInfo ci) {
-    GameRules rules = this.properties.getGameRules();
+  public <W extends ServerWorld & MinecraftServerHook> void onConstruct(CallbackInfo ci) {
+    // GameRules rules = this.properties.getGameRules();
+    // Registry<IGameRuleType<?>> registry = ExtraGameRulesApi.getInstance().getGameRuleRegistry();
 
-    for (String name : IExtendedGameRule.RULES.keySet()) {
-      IExtendedGameRule<Object> rule =
-          (IExtendedGameRule<Object>) IExtendedGameRule.RULES.get(name);
-      GameRules.Value value = rules.get(name);
-      rule.setValue(this.server,
-          value == null ? rule.getDefaultValue() : rule.parseValue(value.getString()));
-      rule.initialize((W) (Object) this);
-    }
+    // TODO Figure out init.
+    /*
+     * for (Identifier id : registry.keys()) { IGameRuleType<?> type = registry.get(id); String name
+     * = id.toString(); GameRules.Value value = rules.get(name); if (value == null) {
+     * rules.put(name, type.stringify(type.getDefaultValue()), this.server); name } }
+     */
   }
 }
