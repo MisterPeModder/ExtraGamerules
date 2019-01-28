@@ -37,10 +37,10 @@ public class GameRuleListWidget extends EntryListWidget<GameRuleListEntryWidget>
     TreeMap<String, GameRules.Key> gamerules = GameRules.getKeys();
     if (gamerules != null) {
       final String term = filter.get().toLowerCase(Locale.ROOT);
-      gamerules.keySet().stream()
-          .filter(key -> term.isEmpty() || key.toLowerCase(Locale.ROOT).contains(term))
-          .forEach(key -> addEntry(
-              new GameRuleListEntryWidget(key, gamerules.get(key).createValue(), client, this)));
+      gamerules.entrySet().stream()
+          .filter(entry -> term.isEmpty() || entry.getKey().toLowerCase(Locale.ROOT).contains(term))
+          .forEach(entry -> addEntry(
+              new GameRuleListEntryWidget(entry.getKey(), entry.getValue(), client, this)));
     }
   }
 }

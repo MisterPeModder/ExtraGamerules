@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import misterpemodder.extragamerules.hook.MinecraftServerHook;
+import misterpemodder.extragamerules.hook.WorldHook;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
@@ -19,8 +19,6 @@ public final class ExplosionMixin {
   @Inject(at = @At("RETURN"),
       method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;DDDFZZ)V")
   public void onConstruct(CallbackInfo ci) {
-    MinecraftServerHook server = ((MinecraftServerHook) this.world.getServer());
-    if (server != null)
-      this.power *= server.getExplosionPowerModifier();
+    this.power *= ((WorldHook) world).getEGValues().explosionPowerModifer;
   }
 }

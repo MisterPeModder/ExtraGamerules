@@ -5,25 +5,23 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import misterpemodder.customgamerules.rule.IGameRuleType;
 import misterpemodder.customgamerules.rule.IGameRuleValue;
-import misterpemodder.extragamerules.hook.MinecraftServerHook;
-import net.fabricmc.loader.FabricLoader;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Type;
 
 public class ExtendedGameRule<V> implements IGameRuleType<V> {
+  protected final String typeName;
   protected final GameRules.Type mcType;
   protected final V defaultValue;
   protected final Function<String, V> parseFunction;
-  protected final BiConsumer<MinecraftServerHook, V> updateValueFunction;
-  protected final Function<MinecraftServerHook, V> getValueFunction;
-  protected BiConsumer<ExtendedGameRuleValue<V>, ServerWorld> onCreatedFuntion;
+  protected final BiConsumer<ExtraGameRuleValues, V> updateValueFunction;
+  protected final Function<ExtraGameRuleValues, V> getValueFunction;
   protected Predicate<V> validator;
 
-  public ExtendedGameRule(GameRules.Type mcType, V defaultValue, Function<String, V> parseFunction,
-      BiConsumer<MinecraftServerHook, V> updateValueFunction,
-      Function<MinecraftServerHook, V> getValueFunction) {
+  public ExtendedGameRule(String typeName, GameRules.Type mcType, V defaultValue,
+      Function<String, V> parseFunction, BiConsumer<ExtraGameRuleValues, V> updateValueFunction,
+      Function<ExtraGameRuleValues, V> getValueFunction) {
+    this.typeName = typeName;
     this.mcType = mcType;
     this.defaultValue = defaultValue;
     this.parseFunction = parseFunction;
@@ -61,10 +59,9 @@ public class ExtendedGameRule<V> implements IGameRuleType<V> {
     return this;
   }
 
-  public ExtendedGameRule<V> onCreated(
-      BiConsumer<ExtendedGameRuleValue<V>, ServerWorld> onCreatedFuntion) {
-    this.onCreatedFuntion = onCreatedFuntion;
-    return this;
+  @Override
+  public <T extends V> boolean isValidValue(T value) {
+    return this.validator == null ? true : this.validator.test(value);
   }
 
   public static <T extends Number> boolean validatePositive(T value) {
@@ -72,8 +69,8 @@ public class ExtendedGameRule<V> implements IGameRuleType<V> {
   }
 
   @Override
-  public String getModId() {
-    return "extra-gamerules";
+  public String getTypeName() {
+    return this.typeName;
   }
 
   public static class ExtendedGameRuleValue<V> implements IGameRuleValue<V> {
@@ -91,28 +88,12 @@ public class ExtendedGameRule<V> implements IGameRuleType<V> {
 
     @Override
     public V getValue() {
-      MinecraftServerHook server = (MinecraftServerHook) (Object) FabricLoader.INSTANCE
-          .getEnvironmentHandler().getServerInstance();
-      return server == null ? this.type.getDefaultValue()
-          : this.type.getValueFunction.apply(server);
+      return this.type.getValueFunction.apply(ExtraGameRuleValues.get());
     }
 
     @Override
     public <T extends V> void setValue(T value, MinecraftServer server) {
-      if (server == null
-          && (server = FabricLoader.INSTANCE.getEnvironmentHandler().getServerInstance()) == null)
-        return;
-      if (this.type.validator != null && !this.type.validator.test(value))
-        this.type.updateValueFunction.accept((MinecraftServerHook) (Object) server,
-            this.type.defaultValue);
-      else
-        this.type.updateValueFunction.accept((MinecraftServerHook) (Object) server, value);
-    }
-
-    @Override
-    public void onCreated(ServerWorld world) {
-      if (this.type.onCreatedFuntion != null)
-        this.type.onCreatedFuntion.accept(this, world);
+      this.type.updateValueFunction.accept(ExtraGameRuleValues.get(server), value);
     }
   }
 }

@@ -7,9 +7,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import misterpemodder.extragamerules.DefaultValues;
 import misterpemodder.extragamerules.hook.FilterableDamageSource;
-import misterpemodder.extragamerules.hook.MinecraftServerHook;
+import misterpemodder.extragamerules.hook.WorldHook;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.world.World;
@@ -24,8 +23,7 @@ public final class EntityMixin {
   @Inject(at = @At("HEAD"), method = "onStruckByLightning(Lnet/minecraft/entity/LightningEntity;)V",
       cancellable = true)
   private void AdjustFireTimer(CallbackInfo ci) {
-    MinecraftServerHook server = ((MinecraftServerHook) this.world.getServer());
-    if (server != null && server.getLightningDamage() == 0f)
+    if (((WorldHook) world).getEGValues().lightningDamage == 0f)
       ci.cancel();
   }
 
@@ -34,8 +32,7 @@ public final class EntityMixin {
       ordinal = 0), method = "onStruckByLightning(Lnet/minecraft/entity/LightningEntity;)V",
       index = 1)
   private float AdjustLightningDamage(float original) {
-    MinecraftServerHook server = ((MinecraftServerHook) this.world.getServer());
-    float damage = server != null ? server.getLightningDamage() : DefaultValues.LIGHTNING_DAMAGE;
+    float damage = ((WorldHook) world).getEGValues().lightningDamage;
     if (damage == 0f)
       this.fireTimer = 0;
     return damage;

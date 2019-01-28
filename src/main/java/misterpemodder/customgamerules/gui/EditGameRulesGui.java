@@ -8,6 +8,9 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
 
+/**
+ * WIP
+ */
 public class EditGameRulesGui extends Gui {
   public final Gui parent;
   private TextFieldWidget textField;
@@ -99,6 +102,14 @@ public class EditGameRulesGui extends Gui {
     this.drawString(this.fontRenderer, I18n.translate("customgamerules.search"),
         this.width / 2 - 100, 9, 0xa0a0a0);
     this.textField.render(mouseX, mouseY, delta);
+    for (GameRuleListEntryWidget entry : this.gameRuleList.getEntries()) {
+      int x = entry.getX();
+      int y = entry.getY();
+      if (mouseX >= x && mouseY >= y && mouseX < x + this.gameRuleList.getEntryWidth()
+          && mouseY < y + this.gameRuleList.getEntryHeight()) {
+        drawTooltip(entry.getTooltip(), mouseX, mouseY);
+      }
+    }
     super.draw(mouseX, mouseY, delta);
   }
 }

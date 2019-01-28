@@ -2,10 +2,9 @@ package misterpemodder.extragamerules;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import misterpemodder.customgamerules.CustomGameRulesApi;
-import misterpemodder.customgamerules.rule.IGameRuleType;
-import misterpemodder.extragamerules.hook.MinecraftServerHook;
+import misterpemodder.customgamerules.GameRuleRegistry;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
 
@@ -13,78 +12,82 @@ public class ExtraGameRules implements ModInitializer {
   @Override
   public void onInitialize() {
     registerIntRule("lightningProbability", DefaultValues.LIGHTNING_PROBABILITY,
-        MinecraftServerHook::setLightningProbability, MinecraftServerHook::getLightningProbability);
+        ExtraGameRuleValues::setLightningProbability, ExtraGameRuleValues::getLightningProbability);
     registerBooleanRule("lightningFire", DefaultValues.LIGHTNING_FIRE,
-        MinecraftServerHook::setLightningSpawningFire,
-        MinecraftServerHook::getLightningSpawningFire);
+        ExtraGameRuleValues::setLightningSpawningFire,
+        ExtraGameRuleValues::getLightningSpawningFire);
     registerFloatRule("lightningDamage", DefaultValues.LIGHTNING_DAMAGE,
-        MinecraftServerHook::setLightningDamage, MinecraftServerHook::getLightningDamage);
+        ExtraGameRuleValues::setLightningDamage, ExtraGameRuleValues::getLightningDamage);
     registerDoubleRule("lightningRange", DefaultValues.LIGHTNING_RANGE,
-        MinecraftServerHook::setLightningRange, MinecraftServerHook::getLightningRange);
+        ExtraGameRuleValues::setLightningRange, ExtraGameRuleValues::getLightningRange);
     registerDoubleRule("lightningHorseSpawningModifier",
         DefaultValues.LIGHTNING_HORSE_SPAWNING_CHANCE,
-        MinecraftServerHook::setHorseTrapSpawingChance,
-        MinecraftServerHook::getHorseTrapSpawningChance);
+        ExtraGameRuleValues::setHorseTrapSpawingChance,
+        ExtraGameRuleValues::getHorseTrapSpawningChance);
     registerBooleanRule("doInsomnia", DefaultValues.DO_INSOMNIA,
-        MinecraftServerHook::setInsomniaEnabled, MinecraftServerHook::isInsomniaEnabled);
+        ExtraGameRuleValues::setInsomniaEnabled, ExtraGameRuleValues::isInsomniaEnabled);
     registerBooleanRule("tntExplodes", DefaultValues.TNT_EXPLODES,
-        MinecraftServerHook::setTntExplodes, MinecraftServerHook::getTntExplodes);
+        ExtraGameRuleValues::setTntExplodes, ExtraGameRuleValues::doesTntExplodes);
     registerFloatRule("explosionPowerModifier", DefaultValues.EXPLOSION_POWER_MODIFER,
-        MinecraftServerHook::setExplosionPowerModifier,
-        MinecraftServerHook::getExplosionPowerModifier);
-    registerBooleanRule("pvp", DefaultValues.PVP_ENABLED, MinecraftServerHook::setPvpEnabled,
-        MinecraftServerHook::isPvpEnabled).onCreated((value, world) -> {
-          MinecraftServer server = world.getServer();
-          value.setValue(server.isPvpEnabled(), server);
+        ExtraGameRuleValues::setExplosionPowerModifier,
+        ExtraGameRuleValues::getExplosionPowerModifier);
+    GameRuleRegistry.INSTANCE.registerGameRule("extra-gamerules", "pvp",
+        new ExtendedGameRule<Boolean>("boolean", GameRules.Type.BOOLEAN, DefaultValues.PVP_ENABLED,
+            Boolean::valueOf, ExtraGameRuleValues::setPvpEnabled,
+            ExtraGameRuleValues::isPvpEnabled) {
+          @Override
+          public Boolean getDefaultValue() {
+            MinecraftServer server =
+                FabricLoader.INSTANCE.getEnvironmentHandler().getServerInstance();
+            if (server == null)
+              return this.defaultValue;
+            return server.isPvpEnabled();
+          }
         });
     registerBooleanRule("drowningDamage", DefaultValues.DROWNING_DAMAGE,
-        MinecraftServerHook::setDrowningDamageEnabled,
-        MinecraftServerHook::isDrowningDamageEnabled);
+        ExtraGameRuleValues::setDrowningDamageEnabled,
+        ExtraGameRuleValues::isDrowningDamageEnabled);
     registerBooleanRule("fallDamage", DefaultValues.FALL_DAMAGE,
-        MinecraftServerHook::setFallDamageEnabled, MinecraftServerHook::isFallDamageEnabled);
+        ExtraGameRuleValues::setFallDamageEnabled, ExtraGameRuleValues::isFallDamageEnabled);
     registerBooleanRule("fireDamage", DefaultValues.FIRE_DAMAGE,
-        MinecraftServerHook::setFireDamageEnabled, MinecraftServerHook::isFireDamageEnabled);
+        ExtraGameRuleValues::setFireDamageEnabled, ExtraGameRuleValues::isFireDamageEnabled);
   }
 
   private static ExtendedGameRule<Integer> registerIntRule(String name, Integer defaultValue,
-      BiConsumer<MinecraftServerHook, Integer> updateValueFunction,
-      Function<MinecraftServerHook, Integer> getValueFunction) {
-    return register(name, GameRules.Type.INTEGER, defaultValue, Integer::valueOf,
+      BiConsumer<ExtraGameRuleValues, Integer> updateValueFunction,
+      Function<ExtraGameRuleValues, Integer> getValueFunction) {
+    return register("integer", name, GameRules.Type.INTEGER, defaultValue, Integer::valueOf,
         updateValueFunction, getValueFunction).validator(ExtendedGameRule::validatePositive);
   }
 
   private static ExtendedGameRule<Boolean> registerBooleanRule(String name, Boolean defaultValue,
-      BiConsumer<MinecraftServerHook, Boolean> updateValueFunction,
-      Function<MinecraftServerHook, Boolean> getValueFunction) {
-    return register(name, GameRules.Type.BOOLEAN, defaultValue, Boolean::valueOf,
+      BiConsumer<ExtraGameRuleValues, Boolean> updateValueFunction,
+      Function<ExtraGameRuleValues, Boolean> getValueFunction) {
+    return register("boolean", name, GameRules.Type.BOOLEAN, defaultValue, Boolean::valueOf,
         updateValueFunction, getValueFunction);
   }
 
   private static ExtendedGameRule<Float> registerFloatRule(String name, Float defaultValue,
-      BiConsumer<MinecraftServerHook, Float> updateValueFunction,
-      Function<MinecraftServerHook, Float> getValueFunction) {
-    return register(name, GameRules.Type.STRING, defaultValue, Float::valueOf, updateValueFunction,
-        getValueFunction).validator(ExtendedGameRule::validatePositive);
+      BiConsumer<ExtraGameRuleValues, Float> updateValueFunction,
+      Function<ExtraGameRuleValues, Float> getValueFunction) {
+    return register("float", name, GameRules.Type.STRING, defaultValue, Float::valueOf,
+        updateValueFunction, getValueFunction).validator(ExtendedGameRule::validatePositive);
   }
 
   private static ExtendedGameRule<Double> registerDoubleRule(String name, Double defaultValue,
-      BiConsumer<MinecraftServerHook, Double> updateValueFunction,
-      Function<MinecraftServerHook, Double> getValueFunction) {
-    return register(name, GameRules.Type.STRING, defaultValue, Double::valueOf, updateValueFunction,
-        getValueFunction).validator(ExtendedGameRule::validatePositive);
+      BiConsumer<ExtraGameRuleValues, Double> updateValueFunction,
+      Function<ExtraGameRuleValues, Double> getValueFunction) {
+    return register("double", name, GameRules.Type.STRING, defaultValue, Double::valueOf,
+        updateValueFunction, getValueFunction).validator(ExtendedGameRule::validatePositive);
   }
 
-  private static <V> ExtendedGameRule<V> register(String name, GameRules.Type mcType,
-      V defaultValue, Function<String, V> parseFunction,
-      BiConsumer<MinecraftServerHook, V> updateValueFunction,
-      Function<MinecraftServerHook, V> getValueFunction) {
-    ExtendedGameRule<V> rule = new ExtendedGameRule<V>(mcType, defaultValue, parseFunction,
-        updateValueFunction, getValueFunction);
-    register(name, rule);
+  private static <V> ExtendedGameRule<V> register(String typeName, String name,
+      GameRules.Type mcType, V defaultValue, Function<String, V> parseFunction,
+      BiConsumer<ExtraGameRuleValues, V> updateValueFunction,
+      Function<ExtraGameRuleValues, V> getValueFunction) {
+    ExtendedGameRule<V> rule = new ExtendedGameRule<V>(typeName, mcType, defaultValue,
+        parseFunction, updateValueFunction, getValueFunction);
+    GameRuleRegistry.INSTANCE.registerGameRule("extra-gamerules", name, rule);
     return rule;
-  }
-
-  private static void register(String name, IGameRuleType<?> type) {
-    CustomGameRulesApi.INSTANCE.registerGameRule(name, type);
   }
 }

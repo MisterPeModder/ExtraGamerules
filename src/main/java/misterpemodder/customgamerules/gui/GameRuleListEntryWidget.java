@@ -1,20 +1,46 @@
 package misterpemodder.customgamerules.gui;
 
+import java.util.Arrays;
+import java.util.List;
+import com.google.common.collect.ImmutableMap;
+import misterpemodder.customgamerules.hook.GameRulesKeyHook;
+import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.ModContainer;
+import net.fabricmc.loader.ModInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.widget.EntryListWidget;
+import net.minecraft.text.TextFormat;
 import net.minecraft.world.GameRules;
 
 public class GameRuleListEntryWidget extends EntryListWidget.Entry<GameRuleListEntryWidget> {
-  public final String key;
-  public final GameRuleListWidget list;
+  private final String ruleName;
+  private final GameRules.Key ruleKey;
+  private final String modName;
+  private final GameRuleListWidget list;
   private final MinecraftClient client;
 
-  public GameRuleListEntryWidget(String key, GameRules.Value value, MinecraftClient client,
+  private static final ImmutableMap<String, String> MODID_TO_NAME;
+
+  static {
+    ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+    for (ModContainer modContainer : FabricLoader.INSTANCE.getModContainers()) {
+      ModInfo modInfo = modContainer.getInfo();
+      builder.put(modInfo.getId(), modInfo.getName());
+    }
+    builder.put("minecraft", "Minecraft");
+    MODID_TO_NAME = builder.build();
+  }
+
+  public GameRuleListEntryWidget(String ruleName, GameRules.Key ruleKey, MinecraftClient client,
       GameRuleListWidget list) {
-    this.key = key;
+    this.ruleName = ruleName;
+    this.ruleKey = ruleKey;
     this.client = client;
     this.list = list;
+    String modId = ((GameRulesKeyHook) this.ruleKey).getModId();
+    String modName = MODID_TO_NAME.get(modId);
+    this.modName = modName == null ? "unknown" : modName;
   }
 
   @Override
@@ -25,7 +51,7 @@ public class GameRuleListEntryWidget extends EntryListWidget.Entry<GameRuleListE
       Drawable.drawRect(x - 2, y - 2, x - 2 + width - 15, y - 2 + 18, 0xFF808080);
       Drawable.drawRect(x - 1, y - 1, x - 3 + width - 15, y - 3 + 18, 0xFF000000);
     }
-    this.client.fontRenderer.draw(this.key, this.getX() + 32 + 3, this.getY() + 1, 0xffffff);
+    this.client.fontRenderer.draw(this.ruleName, this.getX() + 32 + 3, this.getY() + 1, 0xffffff);
   }
 
   @Override
@@ -42,5 +68,12 @@ public class GameRuleListEntryWidget extends EntryListWidget.Entry<GameRuleListE
   public boolean mouseClicked(double v, double v1, int i) {
     list.selected = this;
     return true;
+  }
+
+  public List<String> getTooltip() {
+    return Arrays.asList(
+        TextFormat.GOLD + "type: " + TextFormat.RESET
+            + ((GameRulesKeyHook) this.ruleKey).getTypeName(),
+        TextFormat.BLUE + "" + TextFormat.ITALIC + this.modName);
   }
 }

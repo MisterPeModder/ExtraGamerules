@@ -11,5 +11,23 @@ public interface GameRulesKeyHook {
    * 
    * @return the (stringified) default value.
    */
-  public String getDefaultValue();
+  default String getDefaultValue() {
+    return "";
+  }
+
+  /**
+   * Retrieve the mod that registered this gamerule.
+   * 
+   * @return the mod id.
+   */
+  default String getModId() {
+    return "minecraft";
+  }
+
+  /**
+   * Returns the string representation of the gamerule's type.
+   */
+  default String getTypeName() {
+    return "";
+  }
 }
