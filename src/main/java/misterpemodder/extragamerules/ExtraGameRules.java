@@ -51,6 +51,8 @@ public class ExtraGameRules implements ModInitializer {
         ExtraGameRuleValues::setFallDamageEnabled, ExtraGameRuleValues::isFallDamageEnabled);
     registerBooleanRule("fireDamage", DefaultValues.FIRE_DAMAGE,
         ExtraGameRuleValues::setFireDamageEnabled, ExtraGameRuleValues::isFireDamageEnabled);
+    registerBooleanRule("doSnowMelt", DefaultValues.SNOW_MELTS, ExtraGameRuleValues::setSnowMelt,
+        ExtraGameRuleValues::doSnowMelt);
   }
 
   private static ExtendedGameRule<Integer> registerIntRule(String name, Integer defaultValue,

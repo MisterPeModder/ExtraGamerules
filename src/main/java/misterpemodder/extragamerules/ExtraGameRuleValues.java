@@ -22,6 +22,7 @@ public class ExtraGameRuleValues {
   public boolean drowningDamage;
   public boolean fallDamage;
   public boolean fireDamage;
+  public boolean snowMelts;
 
   public static final ExtraGameRuleValues DUMMY = new ExtraGameRuleValues(null);
 
@@ -44,6 +45,7 @@ public class ExtraGameRuleValues {
     this.drowningDamage = DefaultValues.DROWNING_DAMAGE;
     this.fallDamage = DefaultValues.FALL_DAMAGE;
     this.fireDamage = DefaultValues.FIRE_DAMAGE;
+    this.snowMelts = DefaultValues.SNOW_MELTS;
   }
 
   public static ExtraGameRuleValues get() {
@@ -153,5 +155,13 @@ public class ExtraGameRuleValues {
 
   public void setFireDamageEnabled(boolean value) {
     this.fireDamage = value;
+  }
+
+  public boolean doSnowMelt() {
+    return this.snowMelts;
+  }
+
+  public void setSnowMelt(boolean value) {
+    this.snowMelts = value;
   }
 }
