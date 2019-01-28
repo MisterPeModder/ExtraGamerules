@@ -53,6 +53,8 @@ public class ExtraGameRules implements ModInitializer {
         ExtraGameRuleValues::setFireDamageEnabled, ExtraGameRuleValues::isFireDamageEnabled);
     registerBooleanRule("doSnowMelt", DefaultValues.SNOW_MELTS, ExtraGameRuleValues::setSnowMelt,
         ExtraGameRuleValues::doSnowMelt);
+    registerIntRule("pistonPushLimit", DefaultValues.PISTON_PUSH_LIMIT,
+        ExtraGameRuleValues::setPistonPushLimit, ExtraGameRuleValues::getPistonPushLimit);
   }
 
   private static ExtendedGameRule<Integer> registerIntRule(String name, Integer defaultValue,
