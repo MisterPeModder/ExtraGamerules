@@ -14,8 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.WorldSaveHandler;
+import net.minecraft.world.OldWorldSaveHandler;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.level.LevelInfo;
 import net.minecraft.world.level.LevelProperties;
@@ -33,8 +32,7 @@ public class MinecraftServerMixin implements MinecraftServerHook {
   }
 
   @Inject(at = @At("RETURN"), method = "createWorlds")
-  private void onCreateWorlds(WorldSaveHandler worldSaveHandler,
-      PersistentStateManager persistentStateManager, LevelProperties levelProperties,
+  private void onCreateWorlds(OldWorldSaveHandler saveHandler, LevelProperties levelProperties,
       LevelInfo levelInfo, WorldGenerationProgressListener worldGenerationProgressListener,
       CallbackInfo ci) {
     GameRules rules = levelProperties.getGameRules();

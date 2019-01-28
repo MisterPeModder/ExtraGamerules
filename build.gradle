@@ -8,7 +8,7 @@ targetCompatibility = 1.8
 
 archivesBaseName = "extra-gamerules"
 version = "1.2.2"
-def mcVersion = "19w03a"
+def mcVersion = "19w04b"
 
 minecraft {
 }
@@ -16,7 +16,7 @@ minecraft {
 dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
 	mappings "net.fabricmc:yarn:$mcVersion.3"
-	modCompile "net.fabricmc:fabric-loader:0.3.2.96"
+	modCompile "net.fabricmc:fabric-loader:0.3.4.104"
 
 	// Nullable annotations.
 	compile "com.google.code.findbugs:jsr305:3.0.0"
