@@ -24,6 +24,7 @@ public class ExtraGameRuleValues {
   public boolean fireDamage;
   public boolean snowMelts;
   public int pistonPushLimit;
+  public boolean doHunger;
 
   public static final ExtraGameRuleValues DUMMY = new ExtraGameRuleValues(null);
 
@@ -48,6 +49,7 @@ public class ExtraGameRuleValues {
     this.fireDamage = DefaultValues.FIRE_DAMAGE;
     this.snowMelts = DefaultValues.SNOW_MELTS;
     this.pistonPushLimit = DefaultValues.PISTON_PUSH_LIMIT;
+    this.doHunger = DefaultValues.DO_HUNGER;
   }
 
   public static ExtraGameRuleValues get() {
@@ -173,5 +175,13 @@ public class ExtraGameRuleValues {
 
   public void setPistonPushLimit(int value) {
     this.pistonPushLimit = value;
+  }
+
+  public boolean isHungerEnabled() {
+    return this.doHunger;
+  }
+
+  public void setHungerEnabled(boolean value) {
+    this.doHunger = value;
   }
 }

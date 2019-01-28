@@ -15,4 +15,5 @@ public final class DefaultValues {
   public static final boolean FIRE_DAMAGE = true;
   public static final boolean SNOW_MELTS = true;
   public static final int PISTON_PUSH_LIMIT = 12;
+  public static final boolean DO_HUNGER = true;
 }

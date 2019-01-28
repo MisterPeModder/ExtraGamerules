@@ -13,9 +13,9 @@ public class PistonHandlerMixin {
   @Shadow
   private World world;
 
-  @ModifyConstant(constant = @Constant(intValue = 12, log = true),
+  @ModifyConstant(constant = @Constant(intValue = 12),
       method = "tryMove(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;)Z")
   private int modifyPistonPushLimit(int original) {
-    return ((WorldHook) this.world).getEGValues().getPistonPushLimit();
+    return ((WorldHook) this.world).getEGValues().pistonPushLimit;
   }
 }
