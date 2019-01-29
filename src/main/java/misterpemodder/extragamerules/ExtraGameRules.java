@@ -57,6 +57,8 @@ public class ExtraGameRules implements ModInitializer {
         ExtraGameRuleValues::setPistonPushLimit, ExtraGameRuleValues::getPistonPushLimit);
     registerBooleanRule("doHunger", DefaultValues.DO_HUNGER, ExtraGameRuleValues::setHungerEnabled,
         ExtraGameRuleValues::isHungerEnabled);
+    registerBooleanRule("instantRespawn", DefaultValues.INSTANT_RESPAWN,
+        ExtraGameRuleValues::setInstantRespawn, ExtraGameRuleValues::doInstantRespawn);
   }
 
   private static ExtendedGameRule<Integer> registerIntRule(String name, Integer defaultValue,

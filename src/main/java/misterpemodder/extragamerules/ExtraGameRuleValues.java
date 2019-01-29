@@ -25,6 +25,7 @@ public class ExtraGameRuleValues {
   public boolean snowMelts;
   public int pistonPushLimit;
   public boolean doHunger;
+  public boolean instantRespawn;
 
   public static final ExtraGameRuleValues DUMMY = new ExtraGameRuleValues(null);
 
@@ -50,6 +51,7 @@ public class ExtraGameRuleValues {
     this.snowMelts = DefaultValues.SNOW_MELTS;
     this.pistonPushLimit = DefaultValues.PISTON_PUSH_LIMIT;
     this.doHunger = DefaultValues.DO_HUNGER;
+    this.instantRespawn = DefaultValues.INSTANT_RESPAWN;
   }
 
   public static ExtraGameRuleValues get() {
@@ -183,5 +185,13 @@ public class ExtraGameRuleValues {
 
   public void setHungerEnabled(boolean value) {
     this.doHunger = value;
+  }
+
+  public boolean doInstantRespawn() {
+    return this.instantRespawn;
+  }
+
+  public void setInstantRespawn(boolean value) {
+    this.instantRespawn = value;
   }
 }

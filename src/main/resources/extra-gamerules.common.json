@@ -10,6 +10,7 @@
     "entity.HungerManagerMixin",
     "entity.LightningEntityMixin",
     "entity.PrimedTNTEntityMixin",
+    "entity.ServerPlayerEntityMixin",
     "world.ExplosionMixin",
     "world.GameRulesKeyMixin",
     "world.MinecraftServerMixin",
