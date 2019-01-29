@@ -1,4 +1,15 @@
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+Version 1.3.0:
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+- Added four new gamerules:
+ - instantRespawn
+ - pistonPushLimit
+ - doHunger
+ - doSnowMelt
+- Now has an API called CustomGameRules.
+  - Provides an easier way for modders to add advanced gamerules.
+  - An menu in 'edit world' (WIP, not functional)
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 Version 1.2.2:
 +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 - Updated to minecraft 19w03a.

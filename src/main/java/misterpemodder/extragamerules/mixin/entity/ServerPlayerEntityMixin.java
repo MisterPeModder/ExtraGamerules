@@ -59,8 +59,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
   @Inject(at = @At("RETURN"), method = "onDeath(Lnet/minecraft/entity/damage/DamageSource;)V")
   private void onDeath(CallbackInfo ci) {
     // Call ServerPlayNetworkHandler#onClientStatus with a fake packet to force respawn.
-    if (((WorldHook) this.world).getEGValues().instantRespawn)
+    if (((WorldHook) this.world).getEGValues().instantRespawn) {
       this.networkHandler.onClientStatus(
           new ClientStatusServerPacket(ClientStatusServerPacket.Mode.PERFORM_RESPAWN));
+      this.extinguish();
+    }
   }
 }
