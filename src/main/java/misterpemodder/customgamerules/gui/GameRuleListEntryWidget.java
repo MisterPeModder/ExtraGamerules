@@ -24,6 +24,7 @@ public class GameRuleListEntryWidget extends EntryListWidget.Entry<GameRuleListE
 
   static {
     ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+    // Using FabricLoader.INSTANCE because there is currently no way of querying mods using the API.
     for (ModContainer modContainer : FabricLoader.INSTANCE.getModContainers()) {
       ModInfo modInfo = modContainer.getInfo();
       builder.put(modInfo.getId(), modInfo.getName());

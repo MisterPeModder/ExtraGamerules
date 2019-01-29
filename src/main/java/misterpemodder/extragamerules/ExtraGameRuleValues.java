@@ -2,7 +2,7 @@ package misterpemodder.extragamerules;
 
 import javax.annotation.Nullable;
 import misterpemodder.extragamerules.hook.MinecraftServerHook;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
 /**
@@ -55,7 +55,7 @@ public class ExtraGameRuleValues {
   }
 
   public static ExtraGameRuleValues get() {
-    MinecraftServer server = FabricLoader.INSTANCE.getEnvironmentHandler().getServerInstance();
+    MinecraftServer server = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
     return server != null ? ((MinecraftServerHook) server).getEGValues() : DUMMY;
   }
 

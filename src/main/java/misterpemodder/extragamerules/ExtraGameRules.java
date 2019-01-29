@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import misterpemodder.customgamerules.GameRuleRegistry;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
 
@@ -37,8 +37,7 @@ public class ExtraGameRules implements ModInitializer {
             ExtraGameRuleValues::isPvpEnabled) {
           @Override
           public Boolean getDefaultValue() {
-            MinecraftServer server =
-                FabricLoader.INSTANCE.getEnvironmentHandler().getServerInstance();
+            MinecraftServer server = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
             if (server == null)
               return this.defaultValue;
             return server.isPvpEnabled();
