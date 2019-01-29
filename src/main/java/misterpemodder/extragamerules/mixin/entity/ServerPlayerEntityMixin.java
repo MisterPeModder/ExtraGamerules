@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import io.netty.util.concurrent.GenericFutureListener;
 import misterpemodder.extragamerules.hook.WorldHook;
 import net.minecraft.client.network.packet.CombatEventClientPacket;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,9 +28,25 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
   @Redirect(
       at = @At(value = "INVOKE",
-          target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket"),
+          target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket"
+              + "(Lnet/minecraft/network/Packet;)V"),
       method = "onDeath(Lnet/minecraft/entity/damage/DamageSource;)V")
   private void removeDeathPackets(ServerPlayNetworkHandler handler, Packet<?> packet) {
+    // Just to make sure these are death packets...
+    // Don't send packet if matches and instantRespawn is on.
+    if (packet instanceof CombatEventClientPacket
+        && ((CombatEventClientPacket) packet).type == CombatEventClientPacket.Type.DEATH
+        && ((WorldHook) this.world).getEGValues().instantRespawn)
+      return;
+    this.networkHandler.sendPacket(packet);
+  }
+
+  @Redirect(at = @At(value = "INVOKE",
+      target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket"
+          + "(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"),
+      method = "onDeath(Lnet/minecraft/entity/damage/DamageSource;)V")
+  private void removeDeathPackets(ServerPlayNetworkHandler handler, Packet<?> packet,
+      GenericFutureListener<?> futureListener) {
     // Just to make sure these are death packets...
     // Don't send packet if matches and instantRespawn is on.
     if (packet instanceof CombatEventClientPacket

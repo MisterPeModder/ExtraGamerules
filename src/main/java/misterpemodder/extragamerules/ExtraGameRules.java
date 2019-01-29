@@ -3,14 +3,21 @@ package misterpemodder.extragamerules;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import misterpemodder.customgamerules.GameRuleRegistry;
+import misterpemodder.extragamerules.proxy.SidedProxy;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
 
 public class ExtraGameRules implements ModInitializer {
+  private static SidedProxy proxy;
+
+  public static SidedProxy getProxy() {
+    return proxy;
+  }
+
   @Override
   public void onInitialize() {
+    proxy = SidedProxy.getProxyInstance();
     registerIntRule("lightningProbability", DefaultValues.LIGHTNING_PROBABILITY,
         ExtraGameRuleValues::setLightningProbability, ExtraGameRuleValues::getLightningProbability);
     registerBooleanRule("lightningFire", DefaultValues.LIGHTNING_FIRE,
@@ -37,7 +44,7 @@ public class ExtraGameRules implements ModInitializer {
             ExtraGameRuleValues::isPvpEnabled) {
           @Override
           public Boolean getDefaultValue() {
-            MinecraftServer server = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
+            MinecraftServer server = proxy.getServerInstance();
             if (server == null)
               return this.defaultValue;
             return server.isPvpEnabled();
