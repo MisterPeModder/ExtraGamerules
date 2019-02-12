@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "misterpemodder.extragamerules.mixin",
+  "package": "com.misterpemodder.extragamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "block.PistonHandlerMixin",

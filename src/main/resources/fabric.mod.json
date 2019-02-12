@@ -14,7 +14,7 @@
   },
   "side": "universal",
   "initializers": [
-    "misterpemodder.extragamerules.ExtraGameRules"
+    "com.misterpemodder.extragamerules.ExtraGameRules"
   ],
   "requires": {},
   "mixins": {
