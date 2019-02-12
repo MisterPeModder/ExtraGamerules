@@ -3,7 +3,7 @@ package misterpemodder.customgamerules.gui;
 import java.util.List;
 import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.resource.language.I18n;
@@ -11,12 +11,12 @@ import net.minecraft.client.resource.language.I18n;
 /**
  * WIP
  */
-public class EditGameRulesGui extends Gui {
-  public final Gui parent;
+public class EditGameRulesScreen extends Screen {
+  public final Screen parent;
   private TextFieldWidget textField;
   private GameRuleListWidget gameRuleList;
 
-  public EditGameRulesGui(Gui parent) {
+  public EditGameRulesScreen(Screen parent) {
     this.parent = parent;
   }
 
@@ -32,14 +32,14 @@ public class EditGameRulesGui extends Gui {
         I18n.translate("selectWorld.edit.save")) {
       @Override
       public void onPressed(double double_1, double double_2) {
-        client.openGui(EditGameRulesGui.this.parent);
+        client.openScreen(EditGameRulesScreen.this.parent);
       }
     });
     this.addButton(new ButtonWidget(0, this.width / 2 + 4, this.height - 28, 150, 20,
         I18n.translate("gui.cancel")) {
       @Override
       public void onPressed(double double_1, double double_2) {
-        client.openGui(EditGameRulesGui.this.parent);
+        client.openScreen(EditGameRulesScreen.this.parent);
       }
     });
     (this.textField = new TextFieldWidget(2, this.fontRenderer, this.width / 2 - 100, 22, 200, 20) {

@@ -8,15 +8,24 @@ targetCompatibility = 1.8
 
 archivesBaseName = "extra-gamerules"
 version = "1.3.0"
-def mcVersion = "19w04b"
+def mcVersion = "19w06a"
 
 minecraft {
 }
 
+repositories {
+	maven {
+    url = 'https://maven.jamieswhiteshirt.com/libs-release/'
+  }
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
-	mappings "net.fabricmc:yarn:$mcVersion.3"
-	modCompile "net.fabricmc:fabric-loader:0.3.4.104"
+	mappings "net.fabricmc:yarn:$mcVersion.5"
+	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
+
+	//Dev mode
+	modCompile "com.jamieswhiteshirt:developer-mode:1.0.0"
 
 	// Nullable annotations.
 	compile "com.google.code.findbugs:jsr305:3.0.0"

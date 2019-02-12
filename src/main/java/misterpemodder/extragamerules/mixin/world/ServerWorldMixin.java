@@ -7,14 +7,14 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
 import misterpemodder.extragamerules.ExtraGameRuleValues;
 import misterpemodder.extragamerules.hook.WorldHook;
-import net.minecraft.world.World;
+import net.minecraft.server.world.ServerWorld;
 
-@Mixin(World.class)
-public class WorldMixin implements WorldHook {
+@Mixin(ServerWorld.class)
+public class ServerWorldMixin implements WorldHook {
   private ExtraGameRuleValues egValues = ExtraGameRuleValues.DUMMY;
 
   @ModifyConstant(constant = @Constant(intValue = 100000, ordinal = 0),
-      method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V",
+      method = "method_18203(Lnet/minecraft/world/chunk/WorldChunk;I)V",
       slice = @Slice(from = @At(value = "CONSTANT", args = {"stringValue=thunder"}, ordinal = 0),
           to = @At(value = "NEW", target = "Lnet/minecraft/entity/LightningEntity;", ordinal = 0)))
   private int modifyLightningSpawningChance(int original) {
@@ -22,7 +22,7 @@ public class WorldMixin implements WorldHook {
   }
 
   @ModifyConstant(constant = @Constant(doubleValue = 0.01, ordinal = 0),
-      method = "method_8462(Lnet/minecraft/world/chunk/WorldChunk;I)V",
+      method = "method_18203(Lnet/minecraft/world/chunk/WorldChunk;I)V",
       slice = @Slice(from = @At(value = "CONSTANT", args = {"stringValue=thunder"}, ordinal = 0),
           to = @At(value = "NEW", target = "Lnet/minecraft/entity/LightningEntity;", ordinal = 0)))
   private double modifyHorseSpawningChance(double original) {

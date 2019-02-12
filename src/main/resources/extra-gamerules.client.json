@@ -3,7 +3,7 @@
   "package": "misterpemodder.customgamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BackupLevelGuiMixin"
+    "BackupLevelScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

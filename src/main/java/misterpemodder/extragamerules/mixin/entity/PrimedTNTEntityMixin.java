@@ -7,12 +7,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import misterpemodder.extragamerules.hook.WorldHook;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.PrimedTNTEntity;
+import net.minecraft.entity.PrimedTntEntity;
 import net.minecraft.world.World;
 
-@Mixin(PrimedTNTEntity.class)
-public abstract class PrimedTNTEntityMixin extends Entity {
-  public PrimedTNTEntityMixin(EntityType<?> type, World world) {
+@Mixin(PrimedTntEntity.class)
+public abstract class PrimedTntEntityMixin extends Entity {
+  public PrimedTntEntityMixin(EntityType<?> type, World world) {
     super(type, world);
   }
 

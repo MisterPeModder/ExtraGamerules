@@ -5,13 +5,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import misterpemodder.customgamerules.gui.EditGameRulesButtonWidget;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.menu.BackupLevelGui;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.menu.BackupLevelScreen;
 import net.minecraft.client.resource.language.I18n;
 
 
-@Mixin(BackupLevelGui.class)
-public abstract class BackupLevelGuiMixin extends Gui {
+@Mixin(BackupLevelScreen.class)
+public abstract class BackupLevelScreenMixin extends Screen {
   @Inject(at = @At("TAIL"), method = "onInitialized()V")
   protected void onOnInitialized(CallbackInfo ci) {
     this.addButton(new EditGameRulesButtonWidget(this, 42, this.width / 2 - 100,

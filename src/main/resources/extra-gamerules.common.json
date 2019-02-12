@@ -15,7 +15,7 @@
     "world.GameRulesKeyMixin",
     "world.MinecraftServerMixin",
     "world.PhantomSpawnerMixin",
-    "world.WorldMixin"
+    "world.ServerWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

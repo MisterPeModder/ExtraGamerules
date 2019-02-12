@@ -13,6 +13,7 @@ import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.text.TextFormat;
 import net.minecraft.world.GameRules;
 
+@SuppressWarnings("deprecation")
 public class GameRuleListEntryWidget extends EntryListWidget.Entry<GameRuleListEntryWidget> {
   private final String ruleName;
   private final GameRules.Key ruleKey;

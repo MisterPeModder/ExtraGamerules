@@ -10,7 +10,7 @@ import net.minecraft.world.GameRules;
 public class GameRuleListWidget extends EntryListWidget<GameRuleListEntryWidget> {
   public GameRuleListEntryWidget selected;
 
-  public GameRuleListWidget(EditGameRulesGui gui, MinecraftClient client, int width, int height,
+  public GameRuleListWidget(EditGameRulesScreen gui, MinecraftClient client, int width, int height,
       int y1, int y2, int entryHeight, Supplier<String> filter) {
     super(client, width, height, y1, y2, entryHeight);
     this.filter(filter, false);
