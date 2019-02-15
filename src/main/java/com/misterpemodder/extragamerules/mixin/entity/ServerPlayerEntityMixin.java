@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import io.netty.util.concurrent.GenericFutureListener;
 import com.misterpemodder.extragamerules.hook.ServerWorldHook;
-import net.minecraft.client.network.packet.CombatEventClientPacket;
+import net.minecraft.client.network.packet.CombatEventS2CPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.packet.ClientStatusServerPacket;
+import net.minecraft.server.network.packet.ClientStatusC2SPacket;
 import net.minecraft.server.world.ServerWorld;
 
 @Mixin(ServerPlayerEntity.class)
@@ -34,8 +34,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
   private void removeDeathPackets(ServerPlayNetworkHandler handler, Packet<?> packet) {
     // Just to make sure these are death packets...
     // Don't send packet if matches and instantRespawn is on.
-    if (packet instanceof CombatEventClientPacket
-        && ((CombatEventClientPacket) packet).type == CombatEventClientPacket.Type.DEATH
+    if (packet instanceof CombatEventS2CPacket
+        && ((CombatEventS2CPacket) packet).type == CombatEventS2CPacket.Type.DEATH
         && ((ServerWorldHook) this.world).getEGValues().instantRespawn)
       return;
     this.networkHandler.sendPacket(packet);
@@ -49,8 +49,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
       GenericFutureListener<?> futureListener) {
     // Just to make sure these are death packets...
     // Don't send packet if matches and instantRespawn is on.
-    if (packet instanceof CombatEventClientPacket
-        && ((CombatEventClientPacket) packet).type == CombatEventClientPacket.Type.DEATH
+    if (packet instanceof CombatEventS2CPacket
+        && ((CombatEventS2CPacket) packet).type == CombatEventS2CPacket.Type.DEATH
         && ((ServerWorldHook) this.world).getEGValues().instantRespawn)
       return;
     this.networkHandler.sendPacket(packet);
@@ -60,8 +60,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
   private void onDeath(CallbackInfo ci) {
     // Call ServerPlayNetworkHandler#onClientStatus with a fake packet to force respawn.
     if (((ServerWorldHook) this.world).getEGValues().instantRespawn) {
-      this.networkHandler.onClientStatus(
-          new ClientStatusServerPacket(ClientStatusServerPacket.Mode.PERFORM_RESPAWN));
+      this.networkHandler
+          .onClientStatus(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.PERFORM_RESPAWN));
       this.extinguish();
     }
   }

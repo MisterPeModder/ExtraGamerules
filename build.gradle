@@ -10,8 +10,8 @@ targetCompatibility = 1.8
 
 group = 'com.misterpemodder'
 archivesBaseName = 'extra-gamerules'
-version = '1.4.0'
-def mcVersion = '19w06a'
+version = '1.4.1'
+def mcVersion = '19w07a'
 
 minecraft {
 }
@@ -27,11 +27,11 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
-	mappings "net.fabricmc:yarn:$mcVersion.5"
+	mappings "net.fabricmc:yarn:$mcVersion.6"
 	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
 
 	// Custom Gamerules API
-	modCompile "com.misterpemodder.customgamerules:custom-gamerules:1.0.0"
+	modCompile "com.misterpemodder:custom-gamerules:1.0.0"
 
 	// Dev mode
 	modCompile "com.jamieswhiteshirt:developer-mode:1.0.0"
@@ -91,6 +91,16 @@ curseforge {
 afterEvaluate {
 	// Manually set dependsOn because curseforge doesn't set one.
   tasks.curseforge310323.dependsOn remapJar
+}
+
+processResources {
+  from(sourceSets.main.resources.srcDirs) {
+      include 'fabric.mod.json'
+      expand 'version': project.version
+  }
+  from(sourceSets.main.resources.srcDirs) {
+      exclude 'fabric.mod.json'
+  }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
