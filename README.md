@@ -1,4 +1,6 @@
-ExtraGamerules [![](http://cf.way2muchnoise.eu/full_310323_downloads.svg)](https://minecraft.curseforge.com/projects/extragamerules)
+ExtraGamerules  
+[![Maven Repository](https://img.shields.io/maven-metadata/v/https/maven.misterpemodder.com/list/libs-release/com/misterpemodder/extra-gamerules/maven-metadata.xml.svg)](https://maven.misterpemodder.com/libs-release/com/misterpemodder/extra-gamerules)
+[![](http://cf.way2muchnoise.eu/full_310323_downloads.svg)](https://minecraft.curseforge.com/projects/extragamerules)
 [![](http://cf.way2muchnoise.eu/versions/For%20MC_310323_all.svg)](https://minecraft.curseforge.com/projects/extragamerules)
 =========================
 
