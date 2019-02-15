@@ -21,7 +21,7 @@ repositories {
     url = 'https://maven.jamieswhiteshirt.com/libs-release/'
   }
 	maven {
-    url 'file:///D:/folders/Dev/maven'
+    url 'https://maven.misterpemodder.com/libs-release/'
   }
 }
 
