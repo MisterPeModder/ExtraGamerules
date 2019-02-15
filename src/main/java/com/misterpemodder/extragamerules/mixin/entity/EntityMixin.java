@@ -41,7 +41,7 @@ public final class EntityMixin {
   @Inject(at = @At("HEAD"),
       method = "isInvulnerableTo(Lnet/minecraft/entity/damage/DamageSource;)Z", cancellable = true)
   private void isInvulnerableTo(DamageSource source, CallbackInfoReturnable<Boolean> ci) {
-    if (((FilterableDamageSource) source).isInvulnerable((Entity) (Object) this))
+    if (((FilterableDamageSource) source).extragamerulesIsInvulnerable((Entity) (Object) this))
       ci.setReturnValue(true);
   }
 }

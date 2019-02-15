@@ -13,5 +13,5 @@ public interface FilterableDamageSource {
    * @param entity The target entity.
    * @return true if the entity is invulnerable to this damage source, false otherwise.
    */
-  public boolean isInvulnerable(Entity entity);
+  public boolean extragamerulesIsInvulnerable(Entity entity);
 }

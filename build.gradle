@@ -20,6 +20,9 @@ repositories {
 	maven {
     url = 'https://maven.jamieswhiteshirt.com/libs-release/'
   }
+	maven {
+    url 'file:///D:/folders/Dev/maven'
+  }
 }
 
 dependencies {
@@ -27,16 +30,17 @@ dependencies {
 	mappings "net.fabricmc:yarn:$mcVersion.5"
 	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
 
-	//Dev mode
+	// Custom Gamerules API
+	modCompile "com.misterpemodder.customgamerules:custom-gamerules:1.0.0"
+
+	// Dev mode
 	modCompile "com.jamieswhiteshirt:developer-mode:1.0.0"
+
+	// Mod Menu
+	modCompile "io.github.prospector.modmenu:ModMenu:1.1.1-23"
 
 	// Nullable annotations.
 	compile "com.google.code.findbugs:jsr305:3.0.0"
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
 }
 
 String parseChangelog(String path) {
@@ -86,6 +90,20 @@ curseforge {
 afterEvaluate {
 	// Manually set dependsOn because curseforge doesn't set one.
   tasks.curseforge310323.dependsOn remapJar
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+  archives(jar.archivePath) {
+    builtBy remapJar
+  }
+  archives(sourcesJar.archivePath) {
+    builtBy remapSourcesJar
+  }
 }
 
 uploadArchives {

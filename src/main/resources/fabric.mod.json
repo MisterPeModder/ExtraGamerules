@@ -16,7 +16,9 @@
   "initializers": [
     "com.misterpemodder.extragamerules.ExtraGameRules"
   ],
-  "requires": {},
+  "requires": {
+    "custom-gamerules": "*"
+  },
   "mixins": {
     "client": "extra-gamerules.client.json",
     "common": "extra-gamerules.common.json"

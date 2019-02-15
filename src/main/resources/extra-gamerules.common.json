@@ -12,7 +12,6 @@
     "entity.PrimedTNTEntityMixin",
     "entity.ServerPlayerEntityMixin",
     "world.ExplosionMixin",
-    "world.GameRulesKeyMixin",
     "world.MinecraftServerMixin",
     "world.PhantomSpawnerMixin",
     "world.ServerWorldMixin"

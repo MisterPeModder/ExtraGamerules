@@ -3,13 +3,13 @@ package com.misterpemodder.extragamerules;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import com.misterpemodder.customgamerules.rule.IGameRuleType;
-import com.misterpemodder.customgamerules.rule.IGameRuleValue;
+import com.misterpemodder.customgamerules.api.rule.GameRuleType;
+import com.misterpemodder.customgamerules.api.rule.GameRuleValue;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Type;
 
-public class ExtendedGameRule<V> implements IGameRuleType<V> {
+public class ExtendedGameRule<V> implements GameRuleType<V> {
   protected final String typeName;
   protected final GameRules.Type mcType;
   protected final V defaultValue;
@@ -35,7 +35,7 @@ public class ExtendedGameRule<V> implements IGameRuleType<V> {
   }
 
   @Override
-  public IGameRuleValue<V> createValue() {
+  public GameRuleValue<V> createValue() {
     return new ExtendedGameRuleValue<>(this);
   }
 
@@ -73,7 +73,7 @@ public class ExtendedGameRule<V> implements IGameRuleType<V> {
     return this.typeName;
   }
 
-  public static class ExtendedGameRuleValue<V> implements IGameRuleValue<V> {
+  public static class ExtendedGameRuleValue<V> implements GameRuleValue<V> {
     protected final ExtendedGameRule<V> type;
 
     public ExtendedGameRuleValue(ExtendedGameRule<V> type) {
@@ -82,7 +82,7 @@ public class ExtendedGameRule<V> implements IGameRuleType<V> {
     }
 
     @Override
-    public IGameRuleType<V> getGameRuleType() {
+    public GameRuleType<V> getGameRuleType() {
       return this.type;
     }
 
