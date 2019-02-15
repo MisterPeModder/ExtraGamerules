@@ -8,7 +8,7 @@ plugins {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = 'com.misterpemodder.extragamerules'
+group = 'com.misterpemodder'
 archivesBaseName = 'extra-gamerules'
 version = '1.4.0'
 def mcVersion = '19w06a'
@@ -69,7 +69,7 @@ if (rootProject.file('auth.gradle').exists()) {
 
 curseforge {
 	if (project.hasProperty('curseApiKey'))
-	  apiKey = curse.apiKey
+	  apiKey = project.properties.curseApiKey
 	project {
 		id = '310323'
 		changelog = parseChangelog('changelog.txt')
@@ -79,6 +79,7 @@ curseforge {
 			displayName = "ExtraGamerules-${mcVersion}-${project.version}"
 		}
 		relations {
+			requiredDependency 'customgamerules-api'
       optionalDependency 'fabric'
     }
 	}
