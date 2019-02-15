@@ -3,7 +3,7 @@ package com.misterpemodder.extragamerules.mixin.world;
 import java.util.Map;
 import com.misterpemodder.extragamerules.ExtraGameRuleValues;
 import com.misterpemodder.extragamerules.hook.MinecraftServerHook;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,7 +34,7 @@ public class MinecraftServerMixin implements MinecraftServerHook {
       LevelInfo levelInfo, WorldGenerationProgressListener worldGenerationProgressListener,
       CallbackInfo ci) {
     for (ServerWorld world : this.worlds.values())
-      ((WorldHook) world).setEGValues(this.egValues);
+      ((ServerWorldHook) world).setEGValues(this.egValues);
   }
 
   @Override

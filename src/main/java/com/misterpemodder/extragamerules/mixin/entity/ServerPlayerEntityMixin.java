@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import io.netty.util.concurrent.GenericFutureListener;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.client.network.packet.CombatEventClientPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
@@ -36,7 +36,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     // Don't send packet if matches and instantRespawn is on.
     if (packet instanceof CombatEventClientPacket
         && ((CombatEventClientPacket) packet).type == CombatEventClientPacket.Type.DEATH
-        && ((WorldHook) this.world).getEGValues().instantRespawn)
+        && ((ServerWorldHook) this.world).getEGValues().instantRespawn)
       return;
     this.networkHandler.sendPacket(packet);
   }
@@ -51,7 +51,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     // Don't send packet if matches and instantRespawn is on.
     if (packet instanceof CombatEventClientPacket
         && ((CombatEventClientPacket) packet).type == CombatEventClientPacket.Type.DEATH
-        && ((WorldHook) this.world).getEGValues().instantRespawn)
+        && ((ServerWorldHook) this.world).getEGValues().instantRespawn)
       return;
     this.networkHandler.sendPacket(packet);
   }
@@ -59,7 +59,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
   @Inject(at = @At("RETURN"), method = "onDeath(Lnet/minecraft/entity/damage/DamageSource;)V")
   private void onDeath(CallbackInfo ci) {
     // Call ServerPlayNetworkHandler#onClientStatus with a fake packet to force respawn.
-    if (((WorldHook) this.world).getEGValues().instantRespawn) {
+    if (((ServerWorldHook) this.world).getEGValues().instantRespawn) {
       this.networkHandler.onClientStatus(
           new ClientStatusServerPacket(ClientStatusServerPacket.Mode.PERFORM_RESPAWN));
       this.extinguish();

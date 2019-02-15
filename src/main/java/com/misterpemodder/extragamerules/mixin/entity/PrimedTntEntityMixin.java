@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.PrimedTntEntity;
@@ -18,7 +18,7 @@ public abstract class PrimedTntEntityMixin extends Entity {
 
   @Inject(at = @At("HEAD"), method = "explode()V", cancellable = true)
   private void onExplode(CallbackInfo ci) {
-    if (!((WorldHook) ((Entity) (Object) this).world).getEGValues().tntExplodes)
+    if (!((ServerWorldHook) ((Entity) (Object) this).world).getEGValues().tntExplodes)
       ci.cancel();
   }
 }

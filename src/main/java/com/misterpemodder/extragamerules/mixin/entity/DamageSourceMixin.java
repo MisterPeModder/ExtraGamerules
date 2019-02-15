@@ -3,7 +3,7 @@ package com.misterpemodder.extragamerules.mixin.entity;
 import java.util.function.Predicate;
 import com.misterpemodder.extragamerules.ExtraGameRuleValues;
 import com.misterpemodder.extragamerules.hook.FilterableDamageSource;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,8 +26,8 @@ public final class DamageSourceMixin implements FilterableDamageSource {
     if (entity.world.isClient)
       return false;
     if (isVulnerablePredicate == null)
-      return isFire() && !((WorldHook) entity.world).getEGValues().isFireDamageEnabled();
-    return !isVulnerablePredicate.test(((WorldHook) entity.world).getEGValues());
+      return isFire() && !((ServerWorldHook) entity.world).getEGValues().isFireDamageEnabled();
+    return !isVulnerablePredicate.test(((ServerWorldHook) entity.world).getEGValues());
   }
 
   private static void setVulnerablePredicate(DamageSource source,

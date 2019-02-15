@@ -4,7 +4,7 @@ import java.util.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IceBlock;
 import net.minecraft.block.SnowBlock;
@@ -17,6 +17,6 @@ public class SnowIceMeltingMixin {
       method = "onScheduledTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V")
   private int modifyMeltingLightLevel(int level, BlockState state, World world, BlockPos pos,
       Random random) {
-    return ((WorldHook) world).getEGValues().snowMelts ? level : Integer.MAX_VALUE;
+    return ((ServerWorldHook) world).getEGValues().snowMelts ? level : Integer.MAX_VALUE;
   }
 }

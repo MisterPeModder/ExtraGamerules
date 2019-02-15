@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -16,7 +16,7 @@ public class HungerManagerMixin {
   @Redirect(at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(II)I"),
       method = "update(Lnet/minecraft/entity/player/PlayerEntity;)V")
   private int changeFoodValue(int min, int max, PlayerEntity player) {
-    if (((WorldHook) player.world).getEGValues().doHunger)
+    if (((ServerWorldHook) player.world).getEGValues().doHunger)
       return Math.max(min, max);
     return this.foodLevel;
   }

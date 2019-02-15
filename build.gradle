@@ -10,7 +10,7 @@ targetCompatibility = 1.8
 
 group = 'com.misterpemodder.extragamerules'
 archivesBaseName = 'extra-gamerules'
-version = '1.3.0'
+version = '1.4.0'
 def mcVersion = '19w06a'
 
 minecraft {

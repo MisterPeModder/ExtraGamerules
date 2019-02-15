@@ -6,11 +6,11 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
 import com.misterpemodder.extragamerules.ExtraGameRuleValues;
-import com.misterpemodder.extragamerules.hook.WorldHook;
+import com.misterpemodder.extragamerules.hook.ServerWorldHook;
 import net.minecraft.server.world.ServerWorld;
 
 @Mixin(ServerWorld.class)
-public class ServerWorldMixin implements WorldHook {
+public class ServerWorldMixin implements ServerWorldHook {
   private ExtraGameRuleValues egValues = ExtraGameRuleValues.DUMMY;
 
   @ModifyConstant(constant = @Constant(intValue = 100000, ordinal = 0),
