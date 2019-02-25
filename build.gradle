@@ -10,8 +10,8 @@ targetCompatibility = 1.8
 
 group = 'com.misterpemodder'
 archivesBaseName = 'extra-gamerules'
-version = '1.4.1'
-def mcVersion = '19w07a'
+version = '1.4.2'
+def mcVersion = '19w08b'
 
 minecraft {
 }
@@ -28,16 +28,19 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:$mcVersion"
 	mappings "net.fabricmc:yarn:$mcVersion.6"
-	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
+	modCompile "net.fabricmc:fabric-loader:0.3.7.109"
+
+  // Fabric API
+	modCompile "net.fabricmc:fabric:0.2.3.104"
 
 	// Custom Gamerules API
-	modCompile "com.misterpemodder:custom-gamerules:1.0.0"
+	modCompile "com.misterpemodder:custom-gamerules:1.0.2"
 
 	// Dev mode
-	modCompile "com.jamieswhiteshirt:developer-mode:1.0.0"
+	modCompile "com.jamieswhiteshirt:developer-mode:1.0.3"
 
 	// Mod Menu
-	modCompile "io.github.prospector.modmenu:ModMenu:1.1.1-23"
+	modCompile "io.github.prospector.modmenu:ModMenu:1.1.2-24"
 
 	// Nullable annotations.
 	compile "com.google.code.findbugs:jsr305:3.0.0"

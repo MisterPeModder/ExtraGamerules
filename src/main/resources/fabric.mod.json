@@ -17,7 +17,7 @@
     "com.misterpemodder.extragamerules.ExtraGameRules"
   ],
   "requires": {
-    "custom-gamerules": "*"
+    "custom-gamerules": "^1.0.2"
   },
   "mixins": {
     "client": "extra-gamerules.client.json",
