@@ -3,8 +3,9 @@
   "package": "com.misterpemodder.extragamerules.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "block.IceMeltingMixin",
     "block.PistonHandlerMixin",
-    "block.SnowIceMeltingMixin",
+    "block.SnowMeltingMixin",
     "entity.DamageSourceMixin",
     "entity.EntityMixin",
     "entity.HungerManagerMixin",
