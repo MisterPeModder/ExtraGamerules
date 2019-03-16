@@ -65,6 +65,8 @@ public class ExtraGameRules implements ModInitializer {
         ExtraGameRuleValues::isHungerEnabled);
     registerBooleanRule("instantRespawn", DefaultValues.INSTANT_RESPAWN,
         ExtraGameRuleValues::setInstantRespawn, ExtraGameRuleValues::doInstantRespawn);
+    registerFloatRule("hungerDamage", DefaultValues.HUNGER_DAMAGE,
+        ExtraGameRuleValues::setHungerDamage, ExtraGameRuleValues::getHungerDamage);
   }
 
   private static ExtendedGameRule<Integer> registerIntRule(String name, Integer defaultValue,

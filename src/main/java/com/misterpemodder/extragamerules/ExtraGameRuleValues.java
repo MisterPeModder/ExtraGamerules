@@ -25,7 +25,7 @@ public class ExtraGameRuleValues {
   public int pistonPushLimit;
   public boolean doHunger;
   public boolean instantRespawn;
-
+  public float hungerDamage;
   public static final ExtraGameRuleValues DUMMY = new ExtraGameRuleValues(null);
 
   private MinecraftServer server;
@@ -51,6 +51,7 @@ public class ExtraGameRuleValues {
     this.pistonPushLimit = DefaultValues.PISTON_PUSH_LIMIT;
     this.doHunger = DefaultValues.DO_HUNGER;
     this.instantRespawn = DefaultValues.INSTANT_RESPAWN;
+    this.hungerDamage = DefaultValues.HUNGER_DAMAGE;
   }
 
   public static ExtraGameRuleValues get() {
@@ -192,5 +193,13 @@ public class ExtraGameRuleValues {
 
   public void setInstantRespawn(boolean value) {
     this.instantRespawn = value;
+  }
+
+  public float getHungerDamage() {
+    return hungerDamage;
+  }
+
+  public void setHungerDamage(float hungerDamage) {
+    this.hungerDamage = hungerDamage;
   }
 }

@@ -17,4 +17,5 @@ public final class DefaultValues {
   public static final int PISTON_PUSH_LIMIT = 12;
   public static final boolean DO_HUNGER = true;
   public static final boolean INSTANT_RESPAWN = false;
+  public static final float HUNGER_DAMAGE = 1.0F;
 }
