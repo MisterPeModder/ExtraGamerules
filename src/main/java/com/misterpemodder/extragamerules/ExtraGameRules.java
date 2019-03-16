@@ -17,7 +17,7 @@ public class ExtraGameRules implements ModInitializer {
 
   @Override
   public void onInitialize() {
-    proxy = SidedProxy.getProxyInstance();
+    proxy = SidedProxy.getInstance();
     registerIntRule("lightningProbability", DefaultValues.LIGHTNING_PROBABILITY,
         ExtraGameRuleValues::setLightningProbability, ExtraGameRuleValues::getLightningProbability);
     registerBooleanRule("lightningFire", DefaultValues.LIGHTNING_FIRE,

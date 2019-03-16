@@ -9,7 +9,7 @@ public interface SidedProxy {
   @Nullable
   MinecraftServer getServerInstance();
 
-  static SidedProxy getProxyInstance() {
+  static SidedProxy getInstance() {
     if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
       return new ClientProxy();
     return new ServerProxy();

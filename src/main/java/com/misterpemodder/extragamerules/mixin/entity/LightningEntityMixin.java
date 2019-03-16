@@ -13,11 +13,10 @@ import net.minecraft.util.math.BoundingBox;
 
 @Mixin(LightningEntity.class)
 public abstract class LightningEntityMixin {
-  @ModifyArg(at = @At(value = "INVOKE",
-      target = "Lnet/minecraft/world/World;getVisibleEntities"
-          + "(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BoundingBox;)Ljava/util/List;",
+  @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getEntities"
+      + "(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BoundingBox;Ljava/util/function/Predicate;)Ljava/util/List;",
       ordinal = 0), method = "update()V", index = 1)
-  BoundingBox AdjustLightningRange(BoundingBox original) {
+  BoundingBox adjustLightningRange(BoundingBox original) {
     double range = ((ServerWorldHook) ((Entity) (Object) this).world).getEGValues().lightningRange
         - DefaultValues.LIGHTNING_RANGE;
     return new BoundingBox(original.minX + range, original.minY + range, original.minZ + range,

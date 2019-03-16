@@ -1,23 +1,18 @@
 package com.misterpemodder.extragamerules.mixin.entity;
 
+import com.misterpemodder.extragamerules.ExtraGameRuleValues;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import com.misterpemodder.extragamerules.hook.ServerWorldHook;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.entity.player.HungerManager;
-import net.minecraft.entity.player.PlayerEntity;
 
 @Mixin(HungerManager.class)
-public class HungerManagerMixin {
-  @Shadow
-  private int foodLevel;
-
-  @Redirect(at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(II)I"),
-      method = "update(Lnet/minecraft/entity/player/PlayerEntity;)V")
-  private int changeFoodValue(int min, int max, PlayerEntity player) {
-    if (((ServerWorldHook) player.world).getEGValues().doHunger)
-      return Math.max(min, max);
-    return this.foodLevel;
+public abstract class HungerManagerMixin {
+  @Inject(at = @At("HEAD"), method = "Lnet/minecraft/entity/player/HungerManager;addExhaustion(F)V",
+      cancellable = true)
+  private void blockExhaustion(CallbackInfo ci) {
+    if (!ExtraGameRuleValues.get().doHunger)
+      ci.cancel();
   }
 }
