@@ -17,7 +17,7 @@ public final class ExplosionMixin {
   private float power;
 
   @Inject(at = @At("RETURN"),
-      method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;DDDFZZ)V")
+      method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/Entity;DDDFZLnet/minecraft/world/explosion/Explosion$class_4179;)V")
   public void onConstruct(CallbackInfo ci) {
     this.power *= ((ServerWorldHook) world).getEGValues().explosionPowerModifer;
   }
